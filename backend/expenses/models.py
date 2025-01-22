@@ -9,9 +9,9 @@ class Category(models.Model):
         return self.name
 
 class Expense(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses')
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses')
     item_name = models.CharField(max_length=100)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category_id = models.ForeignKey('Category', on_delete=models.CASCADE)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
