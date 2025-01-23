@@ -22,3 +22,5 @@ api.interceptors.request.use(
 //         return response.data;
 //     } catch ()
 // }
+
+export default api;
