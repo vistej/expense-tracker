@@ -2,11 +2,13 @@ import { FC, useState } from "react";
 import { ROUTES } from "../constants";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import AddExpenseDialog from "./AddExpenseDialog";
 
 interface IHeaderProps {}
 
 export const Header: FC<IHeaderProps> = (props) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = (route: string) => {
@@ -23,18 +25,24 @@ export const Header: FC<IHeaderProps> = (props) => {
     <header className="sticky top-0 z-50 bg-white shadow-md px-4 py-2 flex items-center justify-between">
       {/* Left Section */}
       <nav className="flex items-center space-x-6">
-        <a
+        <button
           onClick={() => handleClick(ROUTES.DASHBOARD)}
           className="text-gray-700 hover:text-blue-500 font-medium"
         >
           Dashboard
-        </a>
-        <a
+        </button>
+        <button
           onClick={() => handleClick(ROUTES.EXPENSES)}
           className="text-gray-700 hover:text-blue-500 font-medium"
         >
           Expenses
-        </a>
+        </button>
+        <button
+          onClick={() => setOpenModal(true)}
+          className="text-gray-700 hover:text-blue-500 font-medium"
+        >
+          Add Expense
+        </button>
       </nav>
 
       {/* Right Section */}
@@ -80,6 +88,10 @@ export const Header: FC<IHeaderProps> = (props) => {
           </div>
         )}
       </div>
+      <AddExpenseDialog
+        isOpen={openModal}
+        closeModal={() => setOpenModal(false)}
+      />
     </header>
   );
 };
