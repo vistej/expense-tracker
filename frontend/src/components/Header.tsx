@@ -65,12 +65,12 @@ export const Header: FC<IHeaderProps> = (props) => {
         {/* Dropdown */}
         {showMenu && (
           <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg group-hover:block">
-            <a
+            {/* <a
               onClick={() => handleClick(ROUTES.PROFILE)}
               className="block px-4 py-2 text-gray-700 hover:bg-blue-100"
             >
               Profile
-            </a>
+            </a> */}
             <button
               onClick={() => handleClick(ROUTES.LOGOUT)}
               className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-100"
