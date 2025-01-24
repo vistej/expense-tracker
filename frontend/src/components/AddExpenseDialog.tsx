@@ -1,42 +1,82 @@
 import { Dialog } from "@headlessui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../apis";
-import { Category } from "../models/expense.model";
-import { ENDPOINTS } from "../constants";
+import { Category, Expense } from "../models/expense.model";
+import { ACTIONS, ENDPOINTS } from "../constants";
 import { useForm } from "react-hook-form";
 
 export type ExpenseForm = {
+  id?: number;
   item_name: string;
   category_id: number;
   cost: number;
 };
 
 const AddExpenseDialog = ({
+  title,
   categories,
   isOpen,
+  expense,
   closeModal,
 }: {
+  title: string;
   categories: Category[];
   isOpen: boolean;
-  closeModal: () => void;
+  expense?: Expense | null;
+  closeModal: (expense: Expense) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ExpenseForm>();
+  useEffect(() => {
+    console.log(expense);
+    if (expense) {
+      reset(expense);
+    } else {
+      reset({});
+    }
+  }, [isOpen]);
 
-  const onSubmit = async (data: ExpenseForm) => {
-    setLoading(true);
+  const addExpense = async (data: ExpenseForm) => {
     try {
-      await api.post(ENDPOINTS.CREATE_EXPENSE, data);
-      reset();
+      const res = await api.post(ENDPOINTS.CREATE_EXPENSE, data);
+      console.log(res);
+      reset({});
+      closeModal(res.data);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateExpense = async (data: ExpenseForm) => {
+    try {
+      const res = await api.patch(
+        ENDPOINTS.UPDATE_EXPENSE + data.id + "/",
+        data
+      );
+      if (res) {
+        reset({});
+        closeModal(data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit = (data: ExpenseForm) => {
+    setLoading(true);
+    if (title === ACTIONS.EDIT) {
+      updateExpense(data);
+    } else {
+      addExpense(data);
     }
   };
 
@@ -47,7 +87,7 @@ const AddExpenseDialog = ({
       <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
         <div className="bg-white p-6 rounded-lg w-xl">
           <Dialog.Title className="text-xl font-bold mb-4">
-            Add Expense
+            {title} Expense
           </Dialog.Title>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="mb-4">
@@ -115,8 +155,8 @@ const AddExpenseDialog = ({
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => {
-                  reset();
-                  closeModal();
+                  reset({});
+                  closeModal(null);
                 }}
                 className="px-4 py-2 bg-gray-300 text-black rounded-md"
               >
@@ -125,9 +165,9 @@ const AddExpenseDialog = ({
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                disabled={loading}
+                disabled={loading || !isDirty}
               >
-                {loading ? "Submitting..." : "Add Expense"}
+                {title} Expense
               </button>
             </div>
           </form>

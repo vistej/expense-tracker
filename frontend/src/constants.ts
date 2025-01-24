@@ -12,7 +12,8 @@ export const ENDPOINTS = {
     GET_CATEGORIES: '/categories/',
     GET_EXPENSES: '/expenses/',
     CREATE_EXPENSE: '/expenses/',
-    DELETE_EXPENSE: '/expenses/delete/'
+    DELETE_EXPENSE: '/expenses/delete/',
+    UPDATE_EXPENSE: '/expenses/update/'
 }
 
 export const ROUTES = {
@@ -22,4 +23,10 @@ export const ROUTES = {
     DASHBOARD: '/',
     EXPENSES: '/expenses',
     PROFILE: '/profile',
+}
+
+export const ACTIONS = {
+    ADD: 'Add',
+    EDIT: 'Update',
+    DELETE: 'Delete'
 }
