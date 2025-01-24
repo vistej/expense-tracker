@@ -14,3 +14,11 @@ export const ENDPOINTS = {
     CREATE_EXPENSE: '/expenses/',
     DELETE_EXPENSE: '/expenses/delete/'
 }
+
+export const ROUTES = {
+    LOGIN: '/login',
+    REGISTER: '/register',
+    DASHBOARD: '/',
+    EXPENSES: '/expenses',
+    PROFILE: '/profile',
+}

@@ -7,17 +7,18 @@ import { Register } from "./pages/Register";
 import { Profile } from "./pages/Profile";
 import { NotFound } from "./pages/NotFound";
 import { Expenses } from "./pages/Expenses";
+import { ROUTES } from "./constants";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.REGISTER} element={<Register />} />
           <Route path="*" element={<NotFound />} />
           <Route
-            path="/"
+            path={ROUTES.DASHBOARD}
             element={
               <ProtectedRoute>
                 <Dashboard />
@@ -25,7 +26,7 @@ function App() {
             }
           />
           <Route
-            path="/profile"
+            path={ROUTES.PROFILE}
             element={
               <ProtectedRoute>
                 <Profile />
@@ -33,7 +34,7 @@ function App() {
             }
           />
           <Route
-            path="/expenses"
+            path={ROUTES.EXPENSES}
             element={
               <ProtectedRoute>
                 <Expenses />
