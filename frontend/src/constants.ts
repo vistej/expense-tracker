@@ -17,6 +17,7 @@ export const ENDPOINTS = {
 
 export const ROUTES = {
     LOGIN: '/login',
+    LOGOUT: '/logout',
     REGISTER: '/register',
     DASHBOARD: '/',
     EXPENSES: '/expenses',

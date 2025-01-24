@@ -8,11 +8,13 @@ import { Profile } from "./pages/Profile";
 import { NotFound } from "./pages/NotFound";
 import { Expenses } from "./pages/Expenses";
 import { ROUTES } from "./constants";
+import { Header } from "./components/Header";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <Header></Header>
         <Routes>
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.REGISTER} element={<Register />} />
