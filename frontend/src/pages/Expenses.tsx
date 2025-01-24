@@ -1,14 +1,30 @@
 import { FC, useEffect, useState } from "react";
 import api from "../apis";
 import { ENDPOINTS } from "../constants";
+import { useCategories } from "../context/categoryContext";
+import AddExpenseDialog from "../components/AddExpenseDialog";
+import { Expense } from "../models/expense.model";
+import { ExpenseList } from "../components/ExpenseList";
+import FloatingButton from "../components/FloatingButton";
 interface IExpensesProps {}
 
 export const Expenses: FC<IExpensesProps> = (props) => {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const { categories } = useCategories();
+  const [categoryMap, setCategoryMap] = useState<any>({});
 
   useEffect(() => {
     fetchExpenses();
   }, []);
+
+  useEffect(() => {
+    const obj: any = {};
+    categories.forEach((cat) => {
+      obj[cat.id] = cat.name;
+    });
+    setCategoryMap(obj);
+  }, [categories]);
 
   const fetchExpenses = async () => {
     try {
@@ -21,39 +37,28 @@ export const Expenses: FC<IExpensesProps> = (props) => {
       console.log(error);
     }
   };
+
+  const loadMore = () => {
+    // TODO implement later
+  };
   return (
     <>
       {expenses && (
-        <div className="max-h-screen overflow-auto bg-gray-100 p-4">
-          {expenses.map((expense) => (
-            <div
-              key={expense.id}
-              className="flex justify-between items-center bg-white shadow-md rounded-md p-4 mb-4"
-            >
-              {/* Left Section: Item Name, Category, Price */}
-              <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
-                <p className="font-semibold text-gray-800">
-                  {expense.item_name}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Category: {expense.category_id}
-                </p>
-                <p className="text-gray-600 text-sm">Price: ${expense.cost}</p>
-              </div>
-
-              {/* Right Section: Edit and Delete Buttons */}
-              <div className="flex space-x-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                  Edit
-                </button>
-                <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ExpenseList
+          expenses={expenses}
+          categoryMap={categoryMap}
+          loadMore={loadMore}
+        />
       )}
+
+      <AddExpenseDialog
+        categories={categories}
+        isOpen={openModal}
+        closeModal={() => setOpenModal(false)}
+      />
+      <div>
+        <FloatingButton onclick={() => setOpenModal(true)} />
+      </div>
     </>
   );
 };

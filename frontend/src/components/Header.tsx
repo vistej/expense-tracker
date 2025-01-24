@@ -2,13 +2,11 @@ import { FC, useState } from "react";
 import { ROUTES } from "../constants";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import AddExpenseDialog from "./AddExpenseDialog";
 
 interface IHeaderProps {}
 
 export const Header: FC<IHeaderProps> = (props) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = (route: string) => {
@@ -36,12 +34,6 @@ export const Header: FC<IHeaderProps> = (props) => {
           className="text-gray-700 hover:text-blue-500 font-medium"
         >
           Expenses
-        </button>
-        <button
-          onClick={() => setOpenModal(true)}
-          className="text-gray-700 hover:text-blue-500 font-medium"
-        >
-          Add Expense
         </button>
       </nav>
 
@@ -88,10 +80,6 @@ export const Header: FC<IHeaderProps> = (props) => {
           </div>
         )}
       </div>
-      <AddExpenseDialog
-        isOpen={openModal}
-        closeModal={() => setOpenModal(false)}
-      />
     </header>
   );
 };

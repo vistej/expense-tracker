@@ -1,23 +1,27 @@
 import { Dialog } from "@headlessui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../apis";
+import { Category } from "../models/expense.model";
+import { ENDPOINTS } from "../constants";
 
 const AddExpenseDialog = ({
+  categories,
   isOpen,
   closeModal,
 }: {
+  categories: Category[];
   isOpen: boolean;
   closeModal: () => void;
 }) => {
   const [itemName, setItemName] = useState("");
   const [cost, setCost] = useState("");
-  const [category, setCategory] = useState(1); // Default category
+  const [category, setCategory] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await api.post("/expenses/", {
+      await api.post(ENDPOINTS.CREATE_EXPENSE, {
         item_name: itemName,
         cost,
         category_id: category,
@@ -64,9 +68,11 @@ const AddExpenseDialog = ({
               onChange={(e) => setCategory(Number(e.target.value))}
               className="w-full p-2 border rounded"
             >
-              <option value={1}>Category 1</option>
-              <option value={2}>Category 2</option>
-              <option value={3}>Category 3</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
           </div>
 

@@ -3,13 +3,31 @@ import { Navigate } from "react-router-dom";
 import { ACCESS_TOKEN, ENDPOINTS, REFRESH_TOKEN } from "../constants";
 import { jwtDecode } from "jwt-decode";
 import api from "../apis";
+import { useCategories } from "../context/categoryContext";
 interface IProtectedRouteProps {
   children: ReactNode;
 }
 
 export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const { categories, setCategories } = useCategories();
 
+  const fetchCategories = async () => {
+    if (!categories.length) {
+      try {
+        const res = await api.get(ENDPOINTS.GET_CATEGORIES);
+        if (res.status === 200) {
+          setCategories(res.data);
+          setIsAuthorized(true);
+        }
+      } catch (error) {
+        console.log("Error fetching categories: ", error);
+      }
+    } else {
+      // TODO change this to loading
+      setIsAuthorized(true);
+    }
+  };
   useEffect(() => {
     auth().catch(() => setIsAuthorized(false));
   }, []);
@@ -22,7 +40,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
       });
       if (res.status === 200) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        setIsAuthorized(true);
+        fetchCategories();
       } else {
         setIsAuthorized(false);
       }
@@ -45,7 +63,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
     if (tokenExpiration && tokenExpiration < now) {
       await refreshToken();
     } else {
-      setIsAuthorized(true);
+      fetchCategories();
     }
   };
 

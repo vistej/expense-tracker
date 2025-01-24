@@ -9,8 +9,18 @@ import { NotFound } from "./pages/NotFound";
 import { Expenses } from "./pages/Expenses";
 import { ROUTES } from "./constants";
 import { Header } from "./components/Header";
+import { CategoryProvider } from "./context/categoryContext";
 
 function App() {
+  const ProtectedWithCategoryProvider = ({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) => (
+    <CategoryProvider>
+      <ProtectedRoute>{children}</ProtectedRoute>
+    </CategoryProvider>
+  );
   return (
     <>
       <BrowserRouter>
@@ -22,25 +32,25 @@ function App() {
           <Route
             path={ROUTES.DASHBOARD}
             element={
-              <ProtectedRoute>
+              <ProtectedWithCategoryProvider>
                 <Dashboard />
-              </ProtectedRoute>
+              </ProtectedWithCategoryProvider>
             }
           />
           <Route
             path={ROUTES.PROFILE}
             element={
-              <ProtectedRoute>
+              <ProtectedWithCategoryProvider>
                 <Profile />
-              </ProtectedRoute>
+              </ProtectedWithCategoryProvider>
             }
           />
           <Route
             path={ROUTES.EXPENSES}
             element={
-              <ProtectedRoute>
+              <ProtectedWithCategoryProvider>
                 <Expenses />
-              </ProtectedRoute>
+              </ProtectedWithCategoryProvider>
             }
           />
         </Routes>
