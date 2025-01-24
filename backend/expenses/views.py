@@ -35,5 +35,13 @@ class ExpenseDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Expense.objects.filter(created_by=user)
+
+class ExpenseUpdate(generics.UpdateAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Expense.objects.filter(created_by=user)
     
     
