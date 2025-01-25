@@ -23,7 +23,7 @@ const AddExpenseDialog = ({
   categories: Category[];
   isOpen: boolean;
   expense?: Expense | null;
-  closeModal: (expense: Expense) => void;
+  closeModal: (expense: Expense | null) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const {

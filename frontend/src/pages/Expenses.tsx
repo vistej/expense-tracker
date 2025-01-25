@@ -30,6 +30,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
   }, [categories]);
 
   const fetchExpenses = async () => {
+    console.log("called");
     if (!page) return;
     try {
       const data = await api.get(ENDPOINTS.GET_EXPENSES + "?page=" + page);
@@ -80,7 +81,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
 
   return (
     <>
-      <div className="flex flex-col  h-screen overflow-hidden items-center">
+      <div className="flex flex-col items-center">
         {expenses && (
           <ExpenseList
             expenses={expenses}
@@ -105,11 +106,13 @@ export const Expenses: FC<IExpensesProps> = (props) => {
           }}
         />
       </div>
-      <ConfirmationDialog
-        title="Delete Expense?"
-        isOpen={action === ACTIONS.DELETE}
-        closeDialog={handleDelete}
-      />
+      {action && (
+        <ConfirmationDialog
+          title="Delete Expense?"
+          isOpen={action === ACTIONS.DELETE}
+          closeDialog={handleDelete}
+        />
+      )}
       <div>
         <FloatingButton onclick={() => setAction(ACTIONS.ADD)} />
       </div>

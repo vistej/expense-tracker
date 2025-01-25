@@ -89,7 +89,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
   return (
     <div
       id="scrollableDiv"
-      className="flex-1 w-full md:w-3/4 overflow-y-auto h-full"
+      className="w-full md:w-3/4 overflow-y-auto h-screen"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
@@ -105,6 +105,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
         }
         className="p-4"
         scrollableTarget="scrollableDiv"
+        scrollThreshold={0.95}
       >
         {getView(expenses)}
       </InfiniteScroll>

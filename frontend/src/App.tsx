@@ -1,5 +1,5 @@
 import "./App.css";
-import './ChartSetup'
+import "./ChartSetup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Dashboard } from "./pages/Dashboard";
@@ -11,6 +11,7 @@ import { Expenses } from "./pages/Expenses";
 import { ROUTES } from "./constants";
 import { Header } from "./components/Header";
 import { CategoryProvider } from "./context/categoryContext";
+import { Footer } from "./components/Footer";
 
 function App() {
   const ProtectedWithCategoryProvider = ({
@@ -55,6 +56,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );
