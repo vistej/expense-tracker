@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import ExpenseSerializer, CategorySerializer, ExpenseCategorySerializer
+from .serializers import ExpenseSerializer, CategorySerializer, ExpenseCategorySerializer, ExpenseMonthlySerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import Expense, Category
 from django.db.models import Sum
@@ -62,4 +62,19 @@ class ExpenseByCategory(APIView):
                     .order_by('category_id', 'month')
                 )
         serializer = ExpenseCategorySerializer(expenses, many=True)
+        return Response(serializer.data)
+
+class ExpenseMonthly(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        expenses = (
+                    Expense.objects.filter(created_by=user)
+                    .annotate(month=TruncMonth('created_at'))
+                    .values('month')
+                    .annotate(total_cost=Sum('cost'))
+                    .order_by('month')
+                )
+        serializer = ExpenseMonthlySerializer(expenses, many=True)
         return Response(serializer.data)

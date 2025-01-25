@@ -7,4 +7,5 @@ urlpatterns = [
     path("expenses/delete/<int:pk>/", views.ExpenseDelete.as_view(), name="expense-delete"),
     path("expenses/update/<int:pk>/", views.ExpenseUpdate.as_view(), name="expense-update"),
     path("expenses/aggregations/category/", views.ExpenseByCategory.as_view(), name="expense-by-category"),
+    path("expenses/aggregations/monthly/", views.ExpenseMonthly.as_view(), name="expense-monthly"),
 ]

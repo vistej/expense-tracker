@@ -19,3 +19,8 @@ class ExpenseCategorySerializer(serializers.Serializer):
     month = serializers.DateTimeField()
     total_cost = serializers.DecimalField(max_digits=20, decimal_places=2)
 
+
+class ExpenseMonthlySerializer(serializers.Serializer):
+    month = serializers.DateTimeField()
+    total_cost = serializers.DecimalField(max_digits=20, decimal_places=2)
+
