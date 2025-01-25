@@ -13,4 +13,9 @@ class ExpenseSerializer(serializers.ModelSerializer):
         model = Expense
         fields = '__all__'
         read_only_fields = ['id', 'created_by', 'created_at']
-        
+
+class ExpenseCategorySerializer(serializers.Serializer):
+    category_id = serializers.IntegerField()
+    month = serializers.DateTimeField()
+    total_cost = serializers.DecimalField(max_digits=20, decimal_places=2)
+
