@@ -1,1 +1,30 @@
+/* src/styles/tailwind.css */
+
+/* Import Tailwind's default styles */
 @import "tailwindcss";
+
+/* Define your custom theme variables */
+@theme {
+  /* Primary colors */
+  --color-primary: #4C88D9; /* Soft Blue */
+  --color-primary-hover: #3b70b1; /* Lighter Soft Blue for hover */
+  --color-success: #4CAF50; /* Soft Green */
+  --color-success-hover: #45a247; /* Lighter Soft Green for hover */
+  --color-warning: #FFA500; /* Soft Orange */
+  --color-warning-hover: #e68a00; /* Lighter Soft Orange for hover */
+  --color-danger: #F44336; /* Soft Red */
+  --color-danger-hover: #e0312d; /* Lighter Soft Red for hover */
+
+  /* Background colors */
+  --color-background: #F4F4F4; /* Light Gray */
+  --color-card-background: #FFFFFF; /* Off-White */
+  --color-sidebar-background: #F5F5F5; /* Soft Beige */
+
+  /* Text colors */
+  --color-text: #333333; /* Dark Gray */
+  --color-muted-text: #707070; /* Muted Gray */
+  --color-disabled-text: #BDBDBD; /* Light Gray for disabled text */
+
+  /* Borders and separators */
+  --color-border: #E0E0E0; /* Soft Light Gray Border */
+}

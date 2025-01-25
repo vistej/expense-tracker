@@ -38,20 +38,25 @@ export const ExpenseList: FC<IExpenseListProps> = ({
         <div key={expense.id}>
           {/* Date Section */}
           {showDate && (
-            <div className="bg-gray-200 p-2">
-              <h2 className="text-sm font-semibold">
+            <div className="bg-[var(--color-background)] p-2 rounded-t-md">
+              <h2 className="text-sm font-semibold text-[var(--color-muted-text)]">
                 {formatDate(expense.created_at)}
               </h2>
             </div>
           )}
-          <div className="flex justify-between items-center bg-white shadow-md p-4 border-b border-gray-200">
+
+          <div className="flex justify-between items-center bg-[var(--color-card-background)] shadow-md p-4 border-b border-[var(--color-border)] rounded-md">
             {/* Left Section: Item Name, Category, Price */}
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
-              <p className="font-semibold text-gray-800">{expense.item_name}</p>
-              <p className="text-gray-600 text-sm">
+              <p className="font-semibold text-[var(--color-text)]">
+                {expense.item_name}
+              </p>
+              <p className="text-[var(--color-muted-text)] text-sm">
                 Category: {categoryMap[expense.category_id]}
               </p>
-              <p className="text-gray-600 text-sm">Price: ${expense.cost}</p>
+              <p className="text-[var(--color-muted-text)] text-sm">
+                Price: ${expense.cost}
+              </p>
             </div>
 
             {/* Right Section: Edit and Delete Buttons */}
@@ -61,7 +66,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
                   setAction(ACTIONS.EDIT);
                   setSelectedExpense(expense);
                 }}
-                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                className="bg-[var(--color-primary)] text-white px-3 py-1 rounded-md hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               >
                 Edit
               </button>
@@ -70,7 +75,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
                   setAction(ACTIONS.DELETE);
                   setSelectedExpense(expense);
                 }}
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                className="bg-[var(--color-danger)] text-white px-3 py-1 rounded-md hover:bg-[var(--color-danger-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-danger)]"
               >
                 Delete
               </button>
@@ -84,7 +89,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
   return (
     <div
       id="scrollableDiv"
-      className="flex-1 w-3/4 overflow-y-auto h-full"
+      className="flex-1 w-full md:w-3/4 overflow-y-auto h-full"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",

@@ -82,16 +82,19 @@ const AddExpenseDialog = ({
 
   return (
     <Dialog open={isOpen} onClose={closeModal}>
-      <div className="fixed inset-0 bg-black bg-opacity-50" />{" "}
+      <div className="fixed inset-0 bg-gradient-to-b from-black to-transparent bg-opacity-50" />{" "}
       {/* Custom Overlay */}
       <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
-        <div className="bg-white p-6 rounded-lg w-xl">
-          <Dialog.Title className="text-xl font-bold mb-4">
+        <div className="bg-[var(--color-card-background)] p-6 rounded-lg w-xl shadow-lg">
+          <Dialog.Title className="text-xl font-bold text-[var(--color-text)] mb-4">
             {title} Expense
           </Dialog.Title>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="mb-4">
-              <label htmlFor="item_name" className="block">
+              <label
+                htmlFor="item_name"
+                className="block text-[var(--color-muted-text)]"
+              >
                 Item Name
               </label>
               <input
@@ -100,7 +103,7 @@ const AddExpenseDialog = ({
                 {...register("item_name", {
                   required: "Item Name is required",
                 })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />
               {errors.item_name && (
                 <p className="text-red-500 text-sm">
@@ -108,8 +111,12 @@ const AddExpenseDialog = ({
                 </p>
               )}
             </div>
+
             <div className="mb-4">
-              <label htmlFor="cost" className="block">
+              <label
+                htmlFor="cost"
+                className="block text-[var(--color-muted-text)]"
+              >
                 Cost
               </label>
               <input
@@ -119,14 +126,18 @@ const AddExpenseDialog = ({
                   required: "Cost is required",
                   valueAsNumber: true,
                 })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />
               {errors.cost && (
                 <p className="text-red-500 text-sm">{errors.cost.message}</p>
               )}
             </div>
+
             <div className="mb-4">
-              <label htmlFor="category" className="block">
+              <label
+                htmlFor="category"
+                className="block text-[var(--color-muted-text)]"
+              >
                 Category
               </label>
               <select
@@ -135,7 +146,7 @@ const AddExpenseDialog = ({
                   valueAsNumber: true,
                   validate: (val) => val > -1 || "Category is required",
                 })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               >
                 {[{ id: -1, name: "Please select" }, ...categories].map(
                   (category) => (
@@ -158,13 +169,13 @@ const AddExpenseDialog = ({
                   reset({});
                   closeModal(null);
                 }}
-                className="px-4 py-2 bg-gray-300 text-black rounded-md"
+                className="px-4 py-2 bg-[var(--color-muted-text)] text-white rounded-md hover:bg-[var(--color-muted-text)]/80 transition-all ease-in-out"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
                 disabled={loading || !isDirty}
               >
                 {title} Expense
