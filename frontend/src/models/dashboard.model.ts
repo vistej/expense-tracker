@@ -17,10 +17,13 @@ export interface CategoryCostObject {
 export interface ChartData {
   labels: string[];
   datasets: {
-    label: string;
+    label?: string;
     data: number[];
-    backgroundColor?: string[];
+    backgroundColor?: string[] | string;
     hoverBackgroundColor?: string[];
+    borderColor?: string;
+    borderWidth?: number;
+    type?: string;
   }[];
 }
 

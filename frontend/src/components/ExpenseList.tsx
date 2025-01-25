@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Expense } from "../models/expense.model";
 import { ACTIONS } from "../constants";
@@ -17,20 +17,34 @@ export const ExpenseList: FC<IExpenseListProps> = ({
   setSelectedExpense,
   setAction,
 }) => {
-  return (
-    <>
-      <InfiniteScroll
-        dataLength={expenses.length}
-        next={loadMore}
-        hasMore={true}
-        loader={<h4>Loading...</h4>}
-        className="max-h-screen overflow-auto bg-gray-100 p-4"
-      >
-        {expenses.map((expense) => (
-          <div
-            key={expense.id}
-            className="flex justify-between items-center bg-white shadow-md rounded-md p-4 mb-4"
-          >
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const getView = (expenses: Expense[]) => {
+    let date: string = "";
+    return expenses.map((expense) => {
+      let showDate = false;
+      if (date !== expense.created_at) {
+        date = expense.created_at;
+        showDate = true;
+      }
+      return (
+        <div key={expense.id}>
+          {/* Date Section */}
+          {showDate && (
+            <div className="bg-gray-200 p-2">
+              <h2 className="text-sm font-semibold">
+                {formatDate(expense.created_at)}
+              </h2>
+            </div>
+          )}
+          <div className="flex justify-between items-center bg-white shadow-md p-4 border-b border-gray-200">
             {/* Left Section: Item Name, Category, Price */}
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
               <p className="font-semibold text-gray-800">{expense.item_name}</p>
@@ -62,8 +76,33 @@ export const ExpenseList: FC<IExpenseListProps> = ({
               </button>
             </div>
           </div>
-        ))}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div
+      id="scrollableDiv"
+      className="flex-1 w-3/4 overflow-y-auto h-full"
+      style={{
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+    >
+      <InfiniteScroll
+        dataLength={expenses.length}
+        next={loadMore}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p className="text-center text-gray-600">No more expenses to show</p>
+        }
+        className="p-4"
+        scrollableTarget="scrollableDiv"
+      >
+        {getView(expenses)}
       </InfiniteScroll>
-    </>
+    </div>
   );
 };

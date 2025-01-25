@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChartData, CategoryCost, CategoryCostObject } from "../models/dashboard.model";
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import { useCategories } from "../context/categoryContext";
 
 
@@ -11,6 +11,10 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
   const { categories } = useCategories();
   const [costData, setCostData] = useState<CategoryCostObject>({});
   const [chartData, setChartData] = useState<ChartData | null>(null);
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+  }
 
   useEffect(() => {
     const costObj = {} as CategoryCostObject;
@@ -43,13 +47,11 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
             label: 'Expenses',
             data,
             backgroundColor: [
-              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40',
-              '#FF5733', '#C70039', '#900C3F', '#581845', '#2E4053',
+              '#D1C6B1', '#9E9E9E', '#B3C8B3', '#D4A5A5', '#A1B2C1',
+              '#F0D0A1', '#D9E2E1', '#C2D8D2', '#E6D9C6', '#C3B4B8'
             ],
-            hoverBackgroundColor: [
-              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40',
-              '#FF5733', '#C70039', '#900C3F', '#581845', '#2E4053',
-            ],
+            borderColor: '#FFFFFF', // Optional: for a clean, white border around each segment
+            borderWidth: 1,
 
           },
         ],
@@ -60,9 +62,9 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
   return (
     <div>
       {chartData &&
-        (<div className="w-full max-w-xs mx-auto">
+        (<div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Category Wise Expenses</h2>
-          <Doughnut data={chartData} />
+          <Pie data={chartData} options={options} />
         </div>)}
 
     </div>

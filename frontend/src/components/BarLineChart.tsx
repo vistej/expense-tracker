@@ -26,16 +26,23 @@ const BarLineChart: FunctionComponent<BarLineChartProps> = ({ monthlyCosts }) =>
       labels,
       datasets: [
         {
+          label: 'Trend',
+          data,
+          borderColor: '#6A8D92',  // Example line color
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          type: 'line',
+        },
+        {
           label: 'Monthly Expenses',
           data,
           backgroundColor: [
-            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40',
-            '#FF5733', '#C70039', '#900C3F', '#581845', '#2E4053',
+            '#B8D8D8', '#A3C1AD', '#D1E0E0', '#F3D1C1', '#C1B2A3', '#D7C6D7',
+            '#C8E6C9', '#E0C8A0', '#A9B0B3', '#E8D8D1', '#C6C6FF', '#F4E1D2'
           ],
-          hoverBackgroundColor: [
-            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40',
-            '#FF5733', '#C70039', '#900C3F', '#581845', '#2E4053',
-          ],
+          borderColor: '#FFFFFF',
+          borderWidth: 1,
+          type: 'bar',
         },
       ],
     });

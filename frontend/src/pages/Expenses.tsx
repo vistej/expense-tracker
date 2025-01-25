@@ -15,6 +15,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
   const [categoryMap, setCategoryMap] = useState<any>({});
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [action, setAction] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     fetchExpenses();
@@ -29,10 +30,12 @@ export const Expenses: FC<IExpensesProps> = (props) => {
   }, [categories]);
 
   const fetchExpenses = async () => {
+    if (!page) return;
     try {
-      const data = await api.get(ENDPOINTS.GET_EXPENSES);
+      const data = await api.get(ENDPOINTS.GET_EXPENSES + "?page=" + page);
       if (data.status == 200) {
-        setExpenses(data.data);
+        setExpenses([...expenses, ...data.data.results]);
+        setPage(data.data.next ? page + 1 : 0);
         console.log(data);
       }
     } catch (error) {
@@ -64,43 +67,44 @@ export const Expenses: FC<IExpensesProps> = (props) => {
           const new_data = expenses.filter((e) => e.id !== id);
           setExpenses(new_data);
           setSelectedExpense(null);
+          setAction("");
         }
       } catch (error) {
         console.log(error);
       }
     } else {
       setSelectedExpense(null);
+      setAction("");
     }
   };
 
-  const loadMore = () => {
-    // TODO implement later
-  };
   return (
     <>
-      {expenses && (
-        <ExpenseList
-          expenses={expenses}
-          categoryMap={categoryMap}
-          setSelectedExpense={setSelectedExpense}
-          setAction={setAction}
-          loadMore={loadMore}
-        />
-      )}
+      <div className="flex flex-col  h-screen overflow-hidden items-center">
+        {expenses && (
+          <ExpenseList
+            expenses={expenses}
+            categoryMap={categoryMap}
+            setSelectedExpense={setSelectedExpense}
+            setAction={setAction}
+            loadMore={fetchExpenses}
+          />
+        )}
 
-      <AddExpenseDialog
-        title={action}
-        expense={selectedExpense}
-        categories={categories}
-        isOpen={action === ACTIONS.ADD || action === ACTIONS.EDIT}
-        closeModal={(expense?: Expense | null) => {
-          if (expense) {
-            updateExpenses(expense, action);
-          }
-          setSelectedExpense(null);
-          setAction("");
-        }}
-      />
+        <AddExpenseDialog
+          title={action}
+          expense={selectedExpense}
+          categories={categories}
+          isOpen={action === ACTIONS.ADD || action === ACTIONS.EDIT}
+          closeModal={(expense?: Expense | null) => {
+            if (expense) {
+              updateExpenses(expense, action);
+            }
+            setSelectedExpense(null);
+            setAction("");
+          }}
+        />
+      </div>
       <ConfirmationDialog
         title="Delete Expense?"
         isOpen={action === ACTIONS.DELETE}

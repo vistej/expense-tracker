@@ -17,7 +17,8 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
       try {
         const res = await api.get(ENDPOINTS.GET_CATEGORIES);
         if (res.status === 200) {
-          setCategories(res.data);
+          console.log(res);
+          setCategories(res.data.results);
           setIsAuthorized(true);
         }
       } catch (error) {
