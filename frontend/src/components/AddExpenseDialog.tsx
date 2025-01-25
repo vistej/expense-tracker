@@ -33,7 +33,6 @@ const AddExpenseDialog = ({
     formState: { errors, isDirty },
   } = useForm<ExpenseForm>();
   useEffect(() => {
-    console.log(expense);
     if (expense) {
       reset(expense);
     } else {
@@ -44,7 +43,6 @@ const AddExpenseDialog = ({
   const addExpense = async (data: ExpenseForm) => {
     try {
       const res = await api.post(ENDPOINTS.CREATE_EXPENSE, data);
-      console.log(res);
       reset({});
       closeModal(res.data);
     } catch (error) {

@@ -1,16 +1,17 @@
 import { FC, useState } from "react";
 import { ROUTES } from "../constants";
-import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import DropdownMenu from "./DropDownMenu";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface IHeaderProps {}
 
 export const Header: FC<IHeaderProps> = (props) => {
-  const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = (route: string) => {
-    setShowMenu(false);
+    setIsMenuOpen(false);
     if (route === ROUTES.LOGOUT) {
       localStorage.clear();
       navigate(ROUTES.LOGIN);
@@ -22,57 +23,53 @@ export const Header: FC<IHeaderProps> = (props) => {
   return (
     <header className="sticky top-0 z-50 bg-blue-50 shadow-md px-6 py-3 flex items-center justify-between border-b border-blue-100">
       {/* Left Section */}
-      <nav className="flex items-center space-x-6">
+      <nav className="flex items-center space-x-6 md:space-x-6 flex-col md:flex-row md:space-y-0 space-y-4 md:block hidden">
+        {" "}
         <button
           onClick={() => handleClick(ROUTES.DASHBOARD)}
-          className="text-gray-700 hover:text-blue-500 font-medium text-lg transition duration-300"
+          className="text-gray-700 hover:text-blue-500 font-medium text-lg transition duration-300 w-full md:w-auto"
         >
           Dashboard
         </button>
         <button
           onClick={() => handleClick(ROUTES.EXPENSES)}
-          className="text-gray-700 hover:text-blue-500 font-medium text-lg transition duration-300"
+          className="text-gray-700 hover:text-blue-500 font-medium text-lg transition duration-300 w-full md:w-auto"
         >
           Expenses
         </button>
       </nav>
 
-      {/* Right Section */}
-      <div className="relative">
-        <button
-          onClick={() => setShowMenu(!showMenu)}
-          className="flex items-center space-x-2 text-gray-700 hover:text-blue-500 font-medium text-lg transition duration-300"
-        >
-          <img src={logo} alt="Profile" className="w-8 h-8 rounded-full" />
-          {/* Username */}
-          <span className="hidden md:inline">John Doe</span>
-          <svg
-            className="w-4 h-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+      {/* Hamburger Menu for mobile */}
+      <div className="md:hidden flex items-center">
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? (
+            <XMarkIcon className="w-8 h-8 text-gray-700" />
+          ) : (
+            <Bars3Icon className="w-8 h-8 text-gray-700" />
+          )}
         </button>
+      </div>
 
-        {/* Dropdown */}
-        {showMenu && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-            <button
-              onClick={() => handleClick(ROUTES.LOGOUT)}
-              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-100 transition duration-300"
-            >
-              Logout
-            </button>
-          </div>
-        )}
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg px-6 py-4 space-y-4 z-50">
+          <button
+            onClick={() => handleClick(ROUTES.DASHBOARD)}
+            className="w-full text-left text-gray-700 hover:text-blue-500 font-medium text-lg"
+          >
+            Dashboard
+          </button>
+          <button
+            onClick={() => handleClick(ROUTES.EXPENSES)}
+            className="w-full text-left text-gray-700 hover:text-blue-500 font-medium text-lg"
+          >
+            Expenses
+          </button>
+        </div>
+      )}
+
+      <div className="relative">
+        <DropdownMenu handleClick={handleClick} />
       </div>
     </header>
   );

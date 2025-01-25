@@ -14,9 +14,7 @@ export const Register: FC<IRegisterProps> = (props) => {
     };
     try {
       const res = await api.post(ENDPOINTS.REGISTER, body);
-      console.log(res);
       if (res.status === 201) {
-        console.log(res.data);
         localStorage.clear();
         navigate(ROUTES.LOGIN);
       }

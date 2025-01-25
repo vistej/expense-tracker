@@ -30,14 +30,12 @@ export const Expenses: FC<IExpensesProps> = (props) => {
   }, [categories]);
 
   const fetchExpenses = async () => {
-    console.log("called");
     if (!page) return;
     try {
       const data = await api.get(ENDPOINTS.GET_EXPENSES + "?page=" + page);
       if (data.status == 200) {
         setExpenses([...expenses, ...data.data.results]);
         setPage(data.data.next ? page + 1 : 0);
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
