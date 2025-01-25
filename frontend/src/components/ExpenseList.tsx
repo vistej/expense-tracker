@@ -38,14 +38,14 @@ export const ExpenseList: FC<IExpenseListProps> = ({
         <div key={expense.id}>
           {/* Date Section */}
           {showDate && (
-            <div className="bg-[var(--color-background)] p-2 rounded-t-md">
+            <div className="bg-[var(--color-background)] p-2">
               <h2 className="text-sm font-semibold text-[var(--color-muted-text)]">
                 {formatDate(expense.created_at)}
               </h2>
             </div>
           )}
 
-          <div className="flex justify-between items-center bg-[var(--color-card-background)] shadow-md p-4 border-b border-[var(--color-border)] rounded-md">
+          <div className="flex justify-between items-center bg-[var(--color-card-background)] shadow-md p-4 border-b border-[var(--color-border)]">
             {/* Left Section: Item Name, Category, Price */}
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
               <p className="font-semibold text-[var(--color-text)]">

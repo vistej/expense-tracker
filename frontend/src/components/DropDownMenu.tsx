@@ -1,17 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useEffect } from "react";
 import { ROUTES } from "../constants"; // Adjust the import based on where ROUTES are located
+import { useUser } from "../context/UserContext";
 
 interface IDropdownMenuProps {
   handleClick: any;
 }
 
 const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
+  const { user } = useUser();
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+      <Menu.Button className="flex items-center space-x-2 cursor-pointer text-white-700 hover:text-blue-500">
         {/* <img src={logo} alt="Profile" className="w-8 h-8 rounded-full" /> */}
-        <span>John Doe</span>
+        <span>{user.username}</span>
         <svg
           className="w-4 h-4"
           xmlns="http://www.w3.org/2000/svg"

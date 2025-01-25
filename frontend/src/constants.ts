@@ -9,6 +9,7 @@ export const ENDPOINTS = {
   LOGIN: '/token/',
   REGISTER: '/user/register/',
   REFRESH: '/token/refresh/',
+  PROFILE: '/user/profile/',
   GET_CATEGORIES: '/categories/',
   GET_EXPENSES: '/expenses/',
   CREATE_EXPENSE: '/expenses/',

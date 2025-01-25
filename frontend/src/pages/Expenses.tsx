@@ -7,6 +7,7 @@ import { Expense } from "../models/expense.model";
 import { ExpenseList } from "../components/ExpenseList";
 import FloatingButton from "../components/FloatingButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import { useUser } from "../context/UserContext";
 interface IExpensesProps {}
 
 export const Expenses: FC<IExpensesProps> = (props) => {
