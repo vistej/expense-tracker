@@ -1,7 +1,8 @@
 import os
 import django
+from config.env import env
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.django.local')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE', default='config.django.prod'))
 django.setup()
 
 from expenses.models import Category

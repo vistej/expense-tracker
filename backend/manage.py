@@ -3,8 +3,9 @@
 import os
 import sys
 import environ
-env = environ.Env()
-environ.Env.read_env()
+from config.env import env
+env_file = os.getenv('ENV_FILE', '.env.local')
+env.read_env(env_file)
 
 def main():
     """Run administrative tasks."""

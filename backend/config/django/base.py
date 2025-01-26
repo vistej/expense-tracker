@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from datetime import timedelta
+import environ
 from config.env import env, BASE_DIR
-
-env.read_env(os.path.join(BASE_DIR, '.env'))
-
+env_file = os.getenv('ENV_FILE', '.env.local')
+env.read_env(env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
