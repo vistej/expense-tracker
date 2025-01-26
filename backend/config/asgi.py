@@ -14,6 +14,6 @@ environ.Env.read_env()
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE', default='config.settings.prod'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE', default='config.django.prod'))
 
 application = get_asgi_application()
