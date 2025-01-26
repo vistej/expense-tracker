@@ -7,7 +7,6 @@ import { Expense } from "../models/expense.model";
 import { ExpenseList } from "../components/ExpenseList";
 import FloatingButton from "../components/FloatingButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import { useUser } from "../context/UserContext";
 interface IExpensesProps {}
 
 export const Expenses: FC<IExpensesProps> = (props) => {
@@ -35,8 +34,11 @@ export const Expenses: FC<IExpensesProps> = (props) => {
     try {
       const data = await api.get(ENDPOINTS.GET_EXPENSES + "?page=" + page);
       if (data.status == 200) {
-        setExpenses([...expenses, ...data.data.results]);
-        setPage(data.data.next ? page + 1 : 0);
+        const hasData = data.data.results.length;
+        if (hasData) {
+          setExpenses([...expenses, ...data.data.results]);
+        }
+        setPage(!data.data.next || !hasData ? 0 : page + 1);
       }
     } catch (error) {
       console.log(error);
@@ -88,6 +90,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
             setSelectedExpense={setSelectedExpense}
             setAction={setAction}
             loadMore={fetchExpenses}
+            hasMore={Boolean(page)}
           />
         )}
 

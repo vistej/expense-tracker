@@ -8,6 +8,7 @@ interface IExpenseListProps {
   categoryMap: any;
   setSelectedExpense: any;
   setAction: any;
+  hasMore: boolean;
 }
 
 export const ExpenseList: FC<IExpenseListProps> = ({
@@ -16,6 +17,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
   categoryMap,
   setSelectedExpense,
   setAction,
+  hasMore,
 }) => {
   const formatDate = (date: string) => {
     const d = new Date(date);
@@ -30,8 +32,9 @@ export const ExpenseList: FC<IExpenseListProps> = ({
     let date: string = "";
     return expenses.map((expense) => {
       let showDate = false;
-      if (date !== expense.created_at) {
-        date = expense.created_at;
+      const td = new Date(expense.created_at).toLocaleDateString();
+      if (date !== td) {
+        date = td;
         showDate = true;
       }
       return (
@@ -98,7 +101,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
       <InfiniteScroll
         dataLength={expenses.length}
         next={loadMore}
-        hasMore={true}
+        hasMore={hasMore}
         loader={<h4>Loading...</h4>}
         endMessage={
           <p className="text-center text-gray-600">No more expenses to show</p>
