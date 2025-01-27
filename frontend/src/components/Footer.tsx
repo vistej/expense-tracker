@@ -47,7 +47,7 @@ export const Footer: FC = () => {
           >
             vistej
           </a>
-          . All rights reserved.
+          .
         </p>
       </div>
     </footer>
