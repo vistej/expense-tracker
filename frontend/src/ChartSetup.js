@@ -8,6 +8,7 @@ import {
   PointElement,
   BarElement,
   LineElement,
+  LineController,
 } from 'chart.js';
 
 // Register all needed components here
@@ -19,5 +20,6 @@ ChartJS.register(
   Legend,
   PointElement,
   BarElement,
-  LineElement
+  LineElement,
+  LineController
 );
