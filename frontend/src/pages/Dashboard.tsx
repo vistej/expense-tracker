@@ -5,7 +5,7 @@ import { CategoryCost, MonthCost } from "../models/dashboard.model";
 import { CategoryChart } from "../components/CategoryChart";
 import BarLineChart from "../components/BarLineChart";
 
-interface IDashboardProps {}
+interface IDashboardProps { }
 
 export const Dashboard: FC<IDashboardProps> = (props) => {
   const [categoryCosts, setCategoryCosts] = useState<CategoryCost[]>([]);
@@ -37,9 +37,13 @@ export const Dashboard: FC<IDashboardProps> = (props) => {
       console.error(error);
     }
   };
+
+  if (!categoryCosts || !monthlyCosts) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
-      <div className="h-screen flex overflow-auto p-4">
+      {categoryCosts.length ? (<div className="h-screen flex overflow-auto p-4">
         <div className="flex flex-col lg:px-20 w-full lg:flex-row md:space-x-4">
           <div className="flex flex-col p-4 w-full lg:w-1/2">
             {monthlyCosts && <BarLineChart monthlyCosts={monthlyCosts} />}
@@ -49,7 +53,9 @@ export const Dashboard: FC<IDashboardProps> = (props) => {
           </div>
         </div>
         <div></div>
-      </div>
+      </div>) : <div className="h-screen flex justify-center items-center">
+        Start adding expenses to see the dashboard.
+      </div>}
     </>
   );
 };
