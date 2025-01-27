@@ -23,7 +23,7 @@ export const Login: FC = () => {
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         navigate(ROUTES.DASHBOARD);
       }
-    } catch (error) {
+    } catch (error: any) {
       alert(error.response.data.detail);
     } finally {
       setLoading(false);

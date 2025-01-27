@@ -19,8 +19,7 @@ export const Register: FC = () => {
         localStorage.clear();
         navigate(ROUTES.LOGIN);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       alert(error.response.data.username[0]);
     } finally {
       setLoading(false);
