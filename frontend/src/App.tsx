@@ -13,8 +13,15 @@ import { Header } from "./components/Header";
 import { CategoryProvider } from "./context/categoryContext";
 import { Footer } from "./components/Footer";
 import { UserProvider } from "./context/UserContext";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    const iframe = document.createElement('iframe');
+    iframe.src = import.meta.env.VITE_API_URL;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }, []);
   const ProtectedWithCategoryProvider = ({
     children,
   }: {
