@@ -120,9 +120,18 @@ const AddExpenseDialog = ({
               <input
                 id="cost"
                 type="number"
+                step="0.01"
                 {...register("cost", {
                   required: "Cost is required",
                   valueAsNumber: true,
+                  validate: (value) =>
+                    /^\d+(\.\d{1,2})?$/.test(value) || "Cost must have at most two decimal places",
+
+                  min: {
+                    value: 0,
+                    message: "Cost must be greater than or equal to 0",
+                  },
+
                 })}
                 className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />

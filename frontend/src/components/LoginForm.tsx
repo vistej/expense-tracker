@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants";
+import { useForm } from "react-hook-form";
 
 interface ILoginFormProps {
   title: string;
@@ -13,13 +14,18 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   buttonText,
   onSubmit,
 }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onHandleSubmit = (e: React.FormEvent) => {
+    const username = e["username"];
+    const password = e["password"];
     onSubmit(username, password);
   };
 
@@ -36,7 +42,8 @@ const LoginForm: React.FC<ILoginFormProps> = ({
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">
           {title}
         </h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onHandleSubmit)} className="flex flex-col gap-4">
+          {/* Username Field */}
           <div className="flex flex-col">
             <label
               htmlFor="username"
@@ -47,12 +54,28 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             <input
               type="text"
               id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters",
+                },
+              })}
+              className={`p-2 border ${errors.username ? "border-red-500" : "border-gray-300"
+                } rounded-md focus:outline-none focus:ring-2 ${errors.username
+                  ? "focus:ring-red-500"
+                  : "focus:ring-[var(--color-primary)]"
+                }`}
               placeholder="Enter your username"
             />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.username.message}
+              </p>
+            )}
           </div>
+
+          {/* Password Field */}
           <div className="flex flex-col">
             <label
               htmlFor="password"
@@ -63,12 +86,28 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
+              className={`p-2 border ${errors.password ? "border-red-500" : "border-gray-300"
+                } rounded-md focus:outline-none focus:ring-2 ${errors.password
+                  ? "focus:ring-red-500"
+                  : "focus:ring-[var(--color-primary)]"
+                }`}
               placeholder="Enter your password"
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full p-2 bg-[var(--color-primary)] text-white font-semibold rounded-md hover:bg-[var(--color-primary)]/80 transition"
@@ -76,6 +115,8 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             {buttonText}
           </button>
         </form>
+
+        {/* Footer Links */}
         {title === "Login" ? (
           <p className="text-sm text-gray-700 mt-4">
             Don't have an account?{" "}
@@ -100,6 +141,6 @@ const LoginForm: React.FC<ILoginFormProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default LoginForm;

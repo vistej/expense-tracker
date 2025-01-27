@@ -1,5 +1,5 @@
 import { FC } from "react";
-interface IFooterProps {}
+interface IFooterProps { }
 
 export const Footer: FC<IFooterProps> = (props) => {
   return (
@@ -16,15 +16,7 @@ export const Footer: FC<IFooterProps> = (props) => {
             React
           </a>
           ,{" "}
-          <a
-            href="https://tailwindcss.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-blue-500 hover:underline"
-          >
-            TailwindCSS
-          </a>
-          , and{" "}
+
           <a
             href="https://www.djangoproject.com"
             target="_blank"
@@ -32,6 +24,15 @@ export const Footer: FC<IFooterProps> = (props) => {
             className="font-semibold text-blue-500 hover:underline"
           >
             Django
+          </a> {" "}
+          and{" "}
+          <a
+            href="https://aws.amazon.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-blue-500 hover:underline"
+          >
+            AWS
           </a>
           .
         </p>

@@ -3,7 +3,7 @@ import LoginForm from "../components/LoginForm";
 import { ENDPOINTS, ROUTES } from "../constants";
 import api from "../apis";
 import { useNavigate } from "react-router-dom";
-interface IRegisterProps {}
+interface IRegisterProps { }
 
 export const Register: FC<IRegisterProps> = (props) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const Register: FC<IRegisterProps> = (props) => {
       }
     } catch (error) {
       console.log(error);
-      alert(error);
+      alert("Failed to register. Try a different username.");
     }
   };
 
