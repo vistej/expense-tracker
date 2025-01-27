@@ -11,7 +11,8 @@ __pycache__
 !*/migrations/__init__.py  # Keep the __init__.py file to mark the directory as a package
 
 # Environment variables
-.env
+.env.local
+.env.prod
 
 # IDEs
 .vscode/
@@ -25,3 +26,8 @@ static/
 # Virtual environment
 env/
 venv/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
