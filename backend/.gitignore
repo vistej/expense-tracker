@@ -1,0 +1,33 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+*.db
+*.sqlite3
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py  # Keep the __init__.py file to mark the directory as a package
+
+# Environment variables
+.env.local
+.env.prod
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+static/
+
+# Virtual environment
+env/
+venv/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
