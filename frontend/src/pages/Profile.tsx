@@ -1,7 +1,6 @@
 import { FC } from "react";
-interface IProfileProps {}
 
-export const Profile: FC<IProfileProps> = (props) => {
+export const Profile: FC = () => {
   return (
     <div>
       <h1>Profile</h1>

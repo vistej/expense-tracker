@@ -5,9 +5,8 @@ import DropdownMenu from "./DropDownMenu";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useUser } from "../context/UserContext";
 
-interface IHeaderProps {}
 
-export const Header: FC<IHeaderProps> = (props) => {
+export const Header: FC = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, setUser } = useUser();
@@ -16,7 +15,7 @@ export const Header: FC<IHeaderProps> = (props) => {
     setIsMenuOpen(false);
     if (route === ROUTES.LOGOUT) {
       localStorage.clear();
-      setUser({});
+      setUser({} as any);
       navigate(ROUTES.LOGIN);
     } else {
       navigate(route);

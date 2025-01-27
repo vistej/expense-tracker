@@ -3,9 +3,8 @@ import LoginForm from "../components/LoginForm";
 import { ENDPOINTS, ROUTES } from "../constants";
 import api from "../apis";
 import { useNavigate } from "react-router-dom";
-interface IRegisterProps { }
 
-export const Register: FC<IRegisterProps> = (props) => {
+export const Register: FC = () => {
   const navigate = useNavigate();
   const handleSubmit = async (username: string, password: string) => {
     const body = {

@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../apis";
 import { Category, Expense } from "../models/expense.model";
 import { ACTIONS, ENDPOINTS } from "../constants";
@@ -23,7 +23,7 @@ const AddExpenseDialog = ({
   categories: Category[];
   isOpen: boolean;
   expense?: Expense | null;
-  closeModal: (expense: Expense | null) => void;
+  closeModal: (expense: Expense | ExpenseForm | null) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const {
@@ -79,7 +79,7 @@ const AddExpenseDialog = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={closeModal}>
+    <Dialog open={isOpen} onClose={() => closeModal(null)}>
       <div className="fixed inset-0 bg-gradient-to-b from-black to-transparent bg-opacity-50" />{" "}
       {/* Custom Overlay */}
       <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
@@ -125,7 +125,7 @@ const AddExpenseDialog = ({
                   required: "Cost is required",
                   valueAsNumber: true,
                   validate: (value) =>
-                    /^\d+(\.\d{1,2})?$/.test(value) || "Cost must have at most two decimal places",
+                    /^\d+(\.\d{1,2})?$/.test(value.toString()) || "Cost must have at most two decimal places",
 
                   min: {
                     value: 0,

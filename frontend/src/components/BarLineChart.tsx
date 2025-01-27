@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { ChartData, MonthCost } from "../models/dashboard.model";
 
 interface BarLineChartProps {
@@ -52,7 +52,7 @@ const BarLineChart: FunctionComponent<BarLineChartProps> = ({ monthlyCosts }) =>
       {chartData &&
         (<div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Monthly Expenses</h2>
-          <Bar data={chartData} options={options} />
+          <Bar data={chartData as any} options={options} />
         </div>)}
 
     </div>

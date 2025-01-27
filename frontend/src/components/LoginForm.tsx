@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
 
   const navigate = useNavigate();
 
-  const onHandleSubmit = (e: React.FormEvent) => {
+  const onHandleSubmit = (e: any) => {
     const username = e["username"];
     const password = e["password"];
     onSubmit(username, password);
@@ -70,7 +70,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             />
             {errors.username && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.username.message}
+                {errors.username.message as string}
               </p>
             )}
           </div>
@@ -102,7 +102,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
+                {errors.password.message as string}
               </p>
             )}
           </div>

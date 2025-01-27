@@ -2,14 +2,13 @@ import { FC, useEffect, useState } from "react";
 import api from "../apis";
 import { ACTIONS, ENDPOINTS } from "../constants";
 import { useCategories } from "../context/categoryContext";
-import AddExpenseDialog from "../components/AddExpenseDialog";
+import AddExpenseDialog, { ExpenseForm } from "../components/AddExpenseDialog";
 import { Expense } from "../models/expense.model";
 import { ExpenseList } from "../components/ExpenseList";
 import FloatingButton from "../components/FloatingButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-interface IExpensesProps {}
 
-export const Expenses: FC<IExpensesProps> = (props) => {
+export const Expenses: FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const { categories } = useCategories();
   const [categoryMap, setCategoryMap] = useState<any>({});
@@ -45,7 +44,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
     }
   };
 
-  const updateExpenses = (expense: Expense, action: string) => {
+  const updateExpenses = (expense: Expense | ExpenseForm, action: string) => {
     let new_data = [];
     if (action == ACTIONS.ADD) {
       new_data = [expense, ...expenses];
@@ -57,7 +56,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
         return ex;
       });
     }
-    setExpenses(new_data);
+    setExpenses(new_data as Expense[]);
   };
 
   const handleDelete = async (val: boolean) => {
@@ -99,7 +98,7 @@ export const Expenses: FC<IExpensesProps> = (props) => {
           expense={selectedExpense}
           categories={categories}
           isOpen={action === ACTIONS.ADD || action === ACTIONS.EDIT}
-          closeModal={(expense?: Expense | null) => {
+          closeModal={(expense?: ExpenseForm | Expense | null) => {
             if (expense) {
               updateExpenses(expense, action);
             }

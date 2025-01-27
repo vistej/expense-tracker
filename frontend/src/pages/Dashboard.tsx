@@ -5,9 +5,8 @@ import { CategoryCost, MonthCost } from "../models/dashboard.model";
 import { CategoryChart } from "../components/CategoryChart";
 import BarLineChart from "../components/BarLineChart";
 
-interface IDashboardProps { }
 
-export const Dashboard: FC<IDashboardProps> = (props) => {
+export const Dashboard: FC = () => {
   const [categoryCosts, setCategoryCosts] = useState<CategoryCost[]>([]);
   const [monthlyCosts, setMonthlyCosts] = useState<MonthCost[]>([]);
 

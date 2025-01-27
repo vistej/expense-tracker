@@ -4,7 +4,7 @@ import {
   CategoryCost,
   CategoryCostObject,
 } from "../models/dashboard.model";
-import { Doughnut, Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useCategories } from "../context/categoryContext";
 
 type Props = {
@@ -76,7 +76,7 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
       {chartData && (
         <div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Category Wise Expenses</h2>
-          <Doughnut data={chartData} options={options} />
+          <Doughnut data={chartData as any} options={options} />
         </div>
       )}
     </div>

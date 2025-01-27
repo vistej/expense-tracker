@@ -3,9 +3,8 @@ import LoginForm from "../components/LoginForm";
 import api from "../apis";
 import { ACCESS_TOKEN, ENDPOINTS, REFRESH_TOKEN, ROUTES } from "../constants";
 import { useNavigate } from "react-router-dom";
-interface ILoginProps {}
 
-export const Login: FC<ILoginProps> = (props) => {
+export const Login: FC = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (username: string, password: string) => {

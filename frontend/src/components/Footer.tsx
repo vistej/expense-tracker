@@ -1,7 +1,7 @@
 import { FC } from "react";
-interface IFooterProps { }
 
-export const Footer: FC<IFooterProps> = (props) => {
+
+export const Footer: FC = () => {
   return (
     <footer className="bg-gray-100 h-20 py-4 text-center text-sm text-gray-700">
       <div className="container mx-auto text-center">

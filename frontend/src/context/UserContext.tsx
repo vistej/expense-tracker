@@ -17,7 +17,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<User>({} as User);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
