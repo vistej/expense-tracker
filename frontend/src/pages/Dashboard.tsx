@@ -4,6 +4,7 @@ import { ENDPOINTS } from "../constants";
 import { CategoryCost, MonthCost } from "../models/dashboard.model";
 import { CategoryChart } from "../components/CategoryChart";
 import BarLineChart from "../components/BarLineChart";
+import Loading from "../components/Loading";
 
 
 export const Dashboard: FC = () => {
@@ -38,7 +39,7 @@ export const Dashboard: FC = () => {
   };
 
   if (!categoryCosts || !monthlyCosts) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <>

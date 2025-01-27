@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import api from "../apis";
 import { useCategories } from "../context/categoryContext";
 import { useUser } from "../context/UserContext";
+import Loading from "./Loading";
 interface IProtectedRouteProps {
   children: ReactNode;
 }
@@ -86,7 +87,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
   };
 
   if (isAuthorized === null) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return isAuthorized ? props.children : <Navigate to="/login" />;

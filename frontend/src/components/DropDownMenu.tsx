@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { FC, Fragment, useEffect } from "react";
+import { FC, Fragment } from "react";
 import { ROUTES } from "../constants"; // Adjust the import based on where ROUTES are located
 import { useUser } from "../context/UserContext";
 
@@ -9,9 +9,7 @@ interface IDropdownMenuProps {
 
 const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
   const { user } = useUser();
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="flex items-center space-x-2 cursor-pointer text-white-700 hover:text-blue-500">
@@ -48,9 +46,8 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
               {({ active }) => (
                 <button
                   onClick={() => handleClick(ROUTES.LOGOUT)}
-                  className={`block w-full text-left px-4 py-2 text-gray-700 ${
-                    active ? "bg-blue-100" : "bg-white"
-                  } hover:bg-blue-100 transition duration-300`}
+                  className={`block w-full text-left px-4 py-2 text-gray-700 ${active ? "bg-blue-100" : "bg-white"
+                    } hover:bg-blue-100 transition duration-300`}
                 >
                   Logout
                 </button>

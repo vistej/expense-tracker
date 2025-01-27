@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import LoginForm from "../components/LoginForm";
 import api from "../apis";
 import { ACCESS_TOKEN, ENDPOINTS, REFRESH_TOKEN, ROUTES } from "../constants";
@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 export const Login: FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (username: string, password: string) => {
+    setLoading(true);
     const body = {
       username: username,
       password: password,
@@ -22,10 +24,12 @@ export const Login: FC = () => {
         navigate(ROUTES.DASHBOARD);
       }
     } catch (error) {
-      alert(error);
+      alert(error.response.data.detail);
+    } finally {
+      setLoading(false);
     }
   };
   return (
-    <LoginForm title="Login" buttonText="Proceed" onSubmit={handleSubmit} />
+    <LoginForm title="Login" buttonText="Proceed" onSubmit={handleSubmit} loading={loading} />
   );
 };

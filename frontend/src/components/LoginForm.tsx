@@ -7,12 +7,14 @@ interface ILoginFormProps {
   title: string;
   buttonText: string;
   onSubmit: (username: string, password: string) => void;
+  loading: boolean;
 }
 
 const LoginForm: React.FC<ILoginFormProps> = ({
   title,
   buttonText,
   onSubmit,
+  loading,
 }) => {
 
   const {
@@ -111,6 +113,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
           <button
             type="submit"
             className="w-full p-2 bg-[var(--color-primary)] text-white font-semibold rounded-md hover:bg-[var(--color-primary)]/80 transition"
+            disabled={loading}
           >
             {buttonText}
           </button>
@@ -122,7 +125,8 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             Don't have an account?{" "}
             <button
               onClick={() => navigate(ROUTES.REGISTER)}
-              className="text-[var(--color-primary)] font-medium"
+              className="text-[var(--color-primary)] font-medium cursor-pointer hover:underline"
+              disabled={loading}
             >
               Register
             </button>
@@ -132,7 +136,8 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             Already have an account?{" "}
             <button
               onClick={() => navigate(ROUTES.LOGIN)}
-              className="text-[var(--color-primary)] font-medium"
+              className="text-[var(--color-primary)] font-medium cursor-pointer hover:underline"
+              disabled={loading}
             >
               Login
             </button>

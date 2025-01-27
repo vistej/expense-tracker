@@ -2,6 +2,7 @@ import { FC } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Expense } from "../models/expense.model";
 import { ACTIONS } from "../constants";
+import Loading from "./Loading";
 interface IExpenseListProps {
   expenses: Expense[];
   loadMore: any;
@@ -102,7 +103,7 @@ export const ExpenseList: FC<IExpenseListProps> = ({
         dataLength={expenses.length}
         next={loadMore}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<Loading />}
         endMessage={
           <p className="text-center text-gray-600">No more expenses to show</p>
         }
