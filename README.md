@@ -3,7 +3,7 @@
 **Live Application:** [Expense Tracker](https://expense-tracker.live/)
 
 **Demo Credentials:**  
-- **Email:** loki 
+- **Username:** loki 
 - **Password:** asdfasdf  
 
 ## Table of Contents
