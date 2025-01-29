@@ -1,6 +1,7 @@
 # Expense Tracker Application
 
 **Live Application:** [Expense Tracker](https://expense-tracker.live/)
+
 **Demo Credentials:**  
 - **Email:** loki 
 - **Password:** asdfasdf  
