@@ -13,7 +13,6 @@
     - [Current Features](#current-features)
     - [Upcoming Features](#upcoming-features)
   - [Technologies Used](#technologies-used)
-  - [Technologies Used](#technologies-used-1)
     - [Frontend](#frontend)
     - [Backend](#backend)
     - [Database](#database)
@@ -47,8 +46,6 @@ Expense Tracker is a full-stack web application that helps users manage and visu
 - Search functionality for quick access.
 - Support for recurring expenses.
 - Dark mode.
-
-## Technologies Used
 
 ## Technologies Used
 
