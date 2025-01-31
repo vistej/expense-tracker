@@ -4,7 +4,7 @@ import { Dialog } from "@headlessui/react";
 interface IConfirmationDialogProps {
   title: string;
   isOpen: boolean;
-  closeDialog: any;
+  closeDialog: (val: boolean) => void;
 }
 
 const ConfirmationDialog: React.FC<IConfirmationDialogProps> = ({

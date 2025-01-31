@@ -1,3 +1,5 @@
+import { ChartData, ChartDataset } from 'chart.js';
+
 export interface CategoryCost {
   category_id: number;
   month: string;
@@ -14,17 +16,17 @@ export interface CategoryCostObject {
   [category_id: string]: MonthCost[];
 }
 
-export interface ChartData {
-  labels: string[];
-  datasets: {
-    label?: string;
-    data: number[];
-    backgroundColor?: string[] | string;
-    hoverBackgroundColor?: string[];
-    borderColor?: string;
-    borderWidth?: number;
-    type?: string;
-  }[];
+export interface DoughnutChartData extends ChartData<'doughnut'> {
+  type?: 'doughnut';
+}
+
+// Define a dataset that can be either 'bar' or 'line'
+type BarDataset = ChartDataset<'bar'> & { type: 'bar' };
+type LineDataset = ChartDataset<'line'> & { type: 'line' };
+
+// Allow datasets to be either 'bar' or 'line'
+export interface BarLineChartData extends ChartData<'bar' | 'line'> {
+  datasets: (BarDataset | LineDataset)[];
 }
 
 export interface CurrentCost {

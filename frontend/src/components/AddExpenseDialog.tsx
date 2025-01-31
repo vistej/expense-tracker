@@ -38,7 +38,7 @@ const AddExpenseDialog = ({
     } else {
       reset({});
     }
-  }, [isOpen]);
+  }, [isOpen, expense, reset]);
 
   const addExpense = async (data: ExpenseForm) => {
     try {

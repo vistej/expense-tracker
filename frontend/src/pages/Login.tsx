@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import LoginForm from "../components/LoginForm";
 import api from "../apis";
-import { ACCESS_TOKEN, ENDPOINTS, REFRESH_TOKEN, ROUTES } from "../constants";
+import { ACCESS_TOKEN, ENDPOINTS, MESSAGES, REFRESH_TOKEN, ROUTES } from "../constants";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Login: FC = () => {
   const navigate = useNavigate();
@@ -23,8 +24,13 @@ export const Login: FC = () => {
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         navigate(ROUTES.DASHBOARD);
       }
-    } catch (error: any) {
-      alert(error.response.data.detail);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        alert(error.response.data.detail);
+      } else {
+        console.error(error);
+        alert(MESSAGES.unknownError);
+      }
     } finally {
       setLoading(false);
     }

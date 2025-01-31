@@ -15,7 +15,7 @@ export const Header: FC = () => {
     setIsMenuOpen(false);
     if (route === ROUTES.LOGOUT) {
       localStorage.clear();
-      setUser({} as any);
+      setUser(null);
       navigate(ROUTES.LOGIN);
     } else {
       navigate(route);
@@ -24,7 +24,7 @@ export const Header: FC = () => {
 
   return (
     <>
-      {user.id && (
+      {user && (
         <header className="sticky top-0 z-50 bg-gray-800 shadow-md px-6 py-3 flex items-center justify-between text-white border-b border-gray-700">
           <nav className="flex items-center space-x-6 md:space-x-6 flex-col md:flex-row md:space-y-0 space-y-4 md:block hidden">
             {" "}

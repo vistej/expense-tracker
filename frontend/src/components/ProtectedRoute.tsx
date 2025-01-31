@@ -16,7 +16,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
   const { user, setUser } = useUser();
 
   const fetchUserProfile = async () => {
-    if (user.id) {
+    if (user) {
       return;
     }
     try {
@@ -47,7 +47,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = (props) => {
   };
   useEffect(() => {
     auth().catch(() => setIsAuthorized(false));
-  }, []);
+  });
 
   const refreshToken = async () => {
     const token = localStorage.getItem(REFRESH_TOKEN);

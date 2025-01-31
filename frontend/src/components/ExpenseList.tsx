@@ -1,18 +1,18 @@
 import { FC } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Expense } from "../models/expense.model";
+import { CategoryMap, Expense } from "../models/expense.model";
 import { ACTIONS } from "../constants";
 import Loading from "./Loading";
-interface IExpenseListProps {
+interface ExpenseListProps {
   expenses: Expense[];
-  loadMore: any;
-  categoryMap: any;
-  setSelectedExpense: any;
-  setAction: any;
+  loadMore: () => void;
+  categoryMap: CategoryMap;
+  setSelectedExpense: React.Dispatch<React.SetStateAction<Expense | null>>;
+  setAction: React.Dispatch<React.SetStateAction<string>>;
   hasMore: boolean;
 }
 
-export const ExpenseList: FC<IExpenseListProps> = ({
+export const ExpenseList: FC<ExpenseListProps> = ({
   expenses,
   loadMore,
   categoryMap,

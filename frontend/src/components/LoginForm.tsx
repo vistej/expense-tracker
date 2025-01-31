@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 interface ILoginFormProps {
   title: string;
@@ -25,9 +25,9 @@ const LoginForm: React.FC<ILoginFormProps> = ({
 
   const navigate = useNavigate();
 
-  const onHandleSubmit = (e: any) => {
-    const username = e["username"];
-    const password = e["password"];
+  const onHandleSubmit = (e: FieldValues) => {
+    const username = e.username;
+    const password = e.password;
     onSubmit(username, password);
   };
 

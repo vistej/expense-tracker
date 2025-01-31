@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  ChartData,
   CategoryCost,
   CategoryCostObject,
+  DoughnutChartData,
 } from "../models/dashboard.model";
 import { Doughnut } from "react-chartjs-2";
 import { useCategories } from "../context/categoryContext";
@@ -13,7 +13,7 @@ type Props = {
 export const CategoryChart = ({ categoryCosts }: Props) => {
   const { categories } = useCategories();
   const [costData, setCostData] = useState<CategoryCostObject>({});
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [chartData, setChartData] = useState<DoughnutChartData | null>(null);
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -76,7 +76,7 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
       {chartData && (
         <div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Category Wise Expenses</h2>
-          <Doughnut data={chartData as any} options={options} />
+          <Doughnut data={chartData} options={options} />
         </div>
       )}
     </div>

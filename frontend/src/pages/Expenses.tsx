@@ -3,7 +3,7 @@ import api from "../apis";
 import { ACTIONS, ENDPOINTS } from "../constants";
 import { useCategories } from "../context/categoryContext";
 import AddExpenseDialog, { ExpenseForm } from "../components/AddExpenseDialog";
-import { Expense } from "../models/expense.model";
+import { CategoryMap, Expense } from "../models/expense.model";
 import { ExpenseList } from "../components/ExpenseList";
 import FloatingButton from "../components/FloatingButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
@@ -11,17 +11,14 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 export const Expenses: FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const { categories } = useCategories();
-  const [categoryMap, setCategoryMap] = useState<any>({});
+  const [categoryMap, setCategoryMap] = useState<CategoryMap>({});
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [action, setAction] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
 
   useEffect(() => {
-    const obj: any = {};
+    const obj: CategoryMap = {};
     categories.forEach((cat) => {
       obj[cat.id] = cat.name;
     });
@@ -42,7 +39,11 @@ export const Expenses: FC = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
 
   const updateExpenses = (expense: Expense | ExpenseForm, action: string) => {
     let new_data = [];

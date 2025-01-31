@@ -3,6 +3,7 @@ export const REFRESH_TOKEN = 'refreshToken';
 
 export const MESSAGES = {
   loading: 'Loading...',
+  unknownError: 'An error occurred. Please try again later.',
 };
 
 export const ENDPOINTS = {

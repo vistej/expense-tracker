@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import LoginForm from "../components/LoginForm";
-import { ENDPOINTS, ROUTES } from "../constants";
+import { ENDPOINTS, MESSAGES, ROUTES } from "../constants";
 import api from "../apis";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Register: FC = () => {
   const navigate = useNavigate();
@@ -19,8 +20,13 @@ export const Register: FC = () => {
         localStorage.clear();
         navigate(ROUTES.LOGIN);
       }
-    } catch (error: any) {
-      alert(error.response.data.username[0]);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        alert(error.response.data.username[0]);
+      } else {
+        console.error(error);
+        alert(MESSAGES.unknownError);
+      }
     } finally {
       setLoading(false);
     }

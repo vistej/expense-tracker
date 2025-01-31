@@ -1,13 +1,13 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
-import { ChartData, MonthCost } from "../models/dashboard.model";
+import { BarLineChartData, MonthCost } from "../models/dashboard.model";
 
 interface BarLineChartProps {
   monthlyCosts: MonthCost[];
 }
 
 const BarLineChart: FunctionComponent<BarLineChartProps> = ({ monthlyCosts }) => {
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [chartData, setChartData] = useState<BarLineChartData | null>(null);
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -52,7 +52,7 @@ const BarLineChart: FunctionComponent<BarLineChartProps> = ({ monthlyCosts }) =>
       {chartData &&
         (<div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Monthly Expenses</h2>
-          <Bar data={chartData as any} options={options} />
+          <Bar data={chartData} options={options} />
         </div>)}
 
     </div>
