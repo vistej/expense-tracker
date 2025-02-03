@@ -8,6 +8,7 @@ from django.db.models import Sum
 from rest_framework.views import APIView
 from django.db.models.functions import TruncMonth
 from rest_framework.response import Response
+from datetime import datetime
 
 # Create your views here.
 
@@ -24,7 +25,16 @@ class ExpenseListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Expense.objects.filter(created_by=user)
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        category_ids = self.request.query_params.get('category_ids')
+        # TODO do you need to check the validity of the data? how?
+        # TODO is it okay to write these constant values here?
+        filters = {'created_by': user, 'date__range': (start_date, end_date)}
+
+        if category_ids:
+            filters['category_id_id__in'] = category_ids.split(',')
+        return Expense.objects.filter(**filters)
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -78,3 +88,4 @@ class ExpenseMonthly(APIView):
                 )
         serializer = ExpenseMonthlySerializer(expenses, many=True)
         return Response(serializer.data)
+        
