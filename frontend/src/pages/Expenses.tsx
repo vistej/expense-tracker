@@ -3,10 +3,12 @@ import api from "../apis";
 import { ACTIONS, ENDPOINTS } from "../constants";
 import { useCategories } from "../context/categoryContext";
 import AddExpenseDialog, { ExpenseForm } from "../components/AddExpenseDialog";
-import { CategoryMap, Expense } from "../models/expense.model";
+import { CategoryMap, Expense, Filter } from "../models/expense.model";
 import { ExpenseList } from "../components/ExpenseList";
 import FloatingButton from "../components/FloatingButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import ExpensesFilter from "../components/ExpensesFilter";
+import { formatDate, getPastDate } from "../utils/date";
 
 export const Expenses: FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -15,6 +17,11 @@ export const Expenses: FC = () => {
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [action, setAction] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [filter, setFilter] = useState<Filter>({
+    start_date: getPastDate(new Date(), 365),
+    end_date: new Date(),
+    category_ids: []
+  })
 
 
   useEffect(() => {
@@ -25,24 +32,30 @@ export const Expenses: FC = () => {
     setCategoryMap(obj);
   }, [categories]);
 
-  const fetchExpenses = async () => {
+  const fetchExpenses = async (page: number) => {
     if (!page) return;
     try {
-      const data = await api.get(ENDPOINTS.GET_EXPENSES + "?page=" + page);
+      const end_date = formatDate(filter.end_date)
+      const start_date = formatDate(filter.start_date)
+      const category_ids = filter.category_ids.join(',')
+
+      const data = await api.get(ENDPOINTS.GET_EXPENSES(start_date, end_date, category_ids, page));
       if (data.status == 200) {
         const hasData = data.data.results.length;
         if (hasData) {
-          setExpenses([...expenses, ...data.data.results]);
+          const res = page === 1 ? [...data.data.results] : [...expenses, ...data.data.results]
+          setExpenses(res);
         }
         setPage(!data.data.next || !hasData ? 0 : page + 1);
       }
     } catch (error) {
       console.log(error);
+      setExpenses([])
     }
   }
 
   useEffect(() => {
-    fetchExpenses();
+    fetchExpenses(page);
   }, []);
 
   const updateExpenses = (expense: Expense | ExpenseForm, action: string) => {
@@ -80,18 +93,26 @@ export const Expenses: FC = () => {
     }
   };
 
+  const onSearch = () => {
+    setPage(1)
+    fetchExpenses(1)
+  }
+
   return (
     <>
       <div className="flex flex-col items-center">
+        <ExpensesFilter filter={filter} updateFilter={setFilter} onSearch={onSearch} />
         {expenses && (
-          <ExpenseList
-            expenses={expenses}
-            categoryMap={categoryMap}
-            setSelectedExpense={setSelectedExpense}
-            setAction={setAction}
-            loadMore={fetchExpenses}
-            hasMore={Boolean(page)}
-          />
+          <>
+            <ExpenseList
+              expenses={expenses}
+              categoryMap={categoryMap}
+              setSelectedExpense={setSelectedExpense}
+              setAction={setAction}
+              loadMore={() => fetchExpenses(page)}
+              hasMore={Boolean(page)}
+            />
+          </>
         )}
 
         <AddExpenseDialog

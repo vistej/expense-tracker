@@ -33,7 +33,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({
     let date: string = "";
     return expenses.map((expense) => {
       let showDate = false;
-      const td = new Date(expense.created_at).toLocaleDateString();
+      const td = new Date(expense.date).toLocaleDateString();
       if (date !== td) {
         date = td;
         showDate = true;
@@ -44,7 +44,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({
           {showDate && (
             <div className="bg-[var(--color-background)] p-2">
               <h2 className="text-sm font-semibold text-[var(--color-muted-text)]">
-                {formatDate(expense.created_at)}
+                {formatDate(expense.date)}
               </h2>
             </div>
           )}

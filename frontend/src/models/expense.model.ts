@@ -3,6 +3,9 @@ export interface Expense {
   item_name: string;
   category_id: number;
   cost: number;
+  date: string;
+  recurring: boolean;
+  recurrence_period: string;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -16,4 +19,10 @@ export interface Category {
 
 export interface CategoryMap {
   [key: number]: string;
+}
+
+export interface Filter {
+  start_date: Date;
+  end_date: Date;
+  category_ids: string[];
 }

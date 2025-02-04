@@ -12,7 +12,13 @@ export const ENDPOINTS = {
   REFRESH: '/token/refresh/',
   PROFILE: '/user/profile/',
   GET_CATEGORIES: '/categories/',
-  GET_EXPENSES: '/expenses/',
+  GET_EXPENSES: (
+    start_date: string,
+    end_date: string,
+    category_ids: string,
+    page: number
+  ) =>
+    `/expenses/?start_date=${start_date}&end_date=${end_date}&category_ids=${category_ids}&page=${page}`,
   CREATE_EXPENSE: '/expenses/',
   DELETE_EXPENSE: '/expenses/delete/',
   UPDATE_EXPENSE: '/expenses/update/',

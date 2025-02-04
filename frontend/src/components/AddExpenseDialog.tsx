@@ -1,15 +1,19 @@
-import { Dialog } from "@headlessui/react";
+import { Dialog, Select } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import api from "../apis";
 import { Category, Expense } from "../models/expense.model";
 import { ACTIONS, ENDPOINTS } from "../constants";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { formatDate } from "../utils/date";
 
 export type ExpenseForm = {
   id?: number;
   item_name: string;
   category_id: number;
   cost: number;
+  date: Date;
 };
 
 const AddExpenseDialog = ({
@@ -28,21 +32,23 @@ const AddExpenseDialog = ({
   const [loading, setLoading] = useState(false);
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isDirty },
   } = useForm<ExpenseForm>();
   useEffect(() => {
     if (expense) {
-      reset(expense);
+      reset({ ...expense, date: new Date(expense.date) });
     } else {
       reset({});
     }
   }, [isOpen, expense, reset]);
 
   const addExpense = async (data: ExpenseForm) => {
+    const expense = { ...data, date: formatDate(data.date) }
     try {
-      const res = await api.post(ENDPOINTS.CREATE_EXPENSE, data);
+      const res = await api.post(ENDPOINTS.CREATE_EXPENSE, expense);
       reset({});
       closeModal(res.data);
     } catch (error) {
@@ -53,10 +59,11 @@ const AddExpenseDialog = ({
   };
 
   const updateExpense = async (data: ExpenseForm) => {
+    const expense = { ...data, date: formatDate(data.date) }
     try {
       const res = await api.patch(
-        ENDPOINTS.UPDATE_EXPENSE + data.id + "/",
-        data
+        ENDPOINTS.UPDATE_EXPENSE + expense.id + "/",
+        expense
       );
       if (res) {
         reset({});
@@ -111,33 +118,67 @@ const AddExpenseDialog = ({
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="cost"
-                className="block text-[var(--color-muted-text)]"
-              >
-                Cost
-              </label>
-              <input
-                id="cost"
-                type="number"
-                step="0.01"
-                {...register("cost", {
-                  required: "Cost is required",
-                  valueAsNumber: true,
-                  validate: (value) =>
-                    /^\d+(\.\d{1,2})?$/.test(value.toString()) || "Cost must have at most two decimal places",
+              <div className="flex space-x-2">
 
-                  min: {
-                    value: 0,
-                    message: "Cost must be greater than or equal to 0",
-                  },
+                <div className="w-1/2">
+                  <label
+                    htmlFor="cost"
+                    className="block text-[var(--color-muted-text)]"
+                  >
+                    Cost
+                  </label>
+                  <input
+                    id="cost"
+                    type="number"
+                    step="0.01"
+                    {...register("cost", {
+                      required: "Cost is required",
+                      valueAsNumber: true,
+                      validate: (value) =>
+                        /^\d+(\.\d{1,2})?$/.test(value.toString()) || "Cost must have at most two decimal places",
 
-                })}
-                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-              />
-              {errors.cost && (
-                <p className="text-red-500 text-sm">{errors.cost.message}</p>
-              )}
+                      min: {
+                        value: 0,
+                        message: "Cost must be greater than or equal to 0",
+                      },
+
+                    })}
+                    className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                  />
+                  {errors.cost && (
+                    <p className="text-red-500 text-sm">{errors.cost.message}</p>
+                  )}
+                </div>
+                <div className="w-1/2">
+                  <label htmlFor="date" className="w-full block text-[var(--color-muted-text)]">
+                    Date
+                  </label>
+                  <Controller
+                    name="date"
+                    control={control}
+                    defaultValue={new Date()}
+                    rules={{ required: "Date is required." }}
+                    render={({ field, fieldState }) => (
+                      <>
+
+                        <DatePicker
+                          {...field}
+                          selected={field.value}
+                          maxDate={new Date()}
+                          showIcon
+                          onChange={(date) => field.onChange(date)}
+                          className="w-full p-2 h-10.5 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                        />
+                        {fieldState.error && <p className="text-red-500 text-sm">
+                          {fieldState.error.message}
+                        </p>}
+                      </>
+                    )}
+                  >
+
+                  </Controller>
+                </div>
+              </div>
             </div>
 
             <div className="mb-4">
@@ -147,7 +188,7 @@ const AddExpenseDialog = ({
               >
                 Category
               </label>
-              <select
+              <Select
                 {...register("category_id", {
                   required: "Category is required",
                   valueAsNumber: true,
@@ -162,7 +203,7 @@ const AddExpenseDialog = ({
                     </option>
                   )
                 )}
-              </select>
+              </Select>
               {errors.category_id && (
                 <p className="text-red-500 text-sm">
                   {errors.category_id.message}
@@ -185,7 +226,8 @@ const AddExpenseDialog = ({
                 className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
                 disabled={loading || !isDirty}
               >
-                {title} Expense
+                {/* TODO button is disabled by isDirty. change it and show errors */}
+                {loading ? 'Saving' : title} Expense
               </button>
             </div>
           </form>
