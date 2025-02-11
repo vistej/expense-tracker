@@ -22,15 +22,15 @@ const ExpensesFilter: FC<ExpensesFilterProps> = ({ filter, updateFilter, onSearc
   }
 
 
-  return (<div className="p-4 flex flex-row space-x-2 w-full md:w-3/4 ">
-    <div className="w-1/2">
+  return (<div className="p-4 flex flex-col md:flex-row space-x-2 justify-between w-full md:w-3/4 ">
+    <div className="w-full md:w-1/2">
       <DateRange filter={filter} updateFilter={updateFilter} />
     </div>
-    <div className="w-1/4">
+    <div className="w-full md:w-1/4">
       <DropDown data={categories} onChange={setSelectedCategories} />
     </div>
     <button
-      className="w-1/4 mt-6 py-1.5 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
+      className="w-full md:w-1/4 mt-6 py-1.5 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
       onClick={onSearch}
     >Search</button>
   </div>);

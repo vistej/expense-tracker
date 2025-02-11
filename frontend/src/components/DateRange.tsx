@@ -9,7 +9,7 @@ interface DateRangeProps {
 
 const DateRange: FC<DateRangeProps> = ({ filter, updateFilter }) => {
 
-  return (<div className="flex flex-row">
+  return (<div className="flex flex-col md:flex-row">
     <div>
       <label
         htmlFor="start_date"

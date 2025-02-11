@@ -13,6 +13,8 @@ interface DropDownProps {
   // selected: number[]
 }
 
+// TODO remove react-select and make a customized multi-select using headless and tailwind.
+
 const DropDown: FC<DropDownProps> = ({ data, onChange }) => {
   const [selected, setSelected] = useState<SelectOption[]>([]);
 
@@ -34,7 +36,15 @@ const DropDown: FC<DropDownProps> = ({ data, onChange }) => {
         isMulti
         closeMenuOnSelect={false}
         value={selected}
-        // className="w-full py-2 h-10.5 border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        styles={{
+          valueContainer: (base) => ({
+            ...base,
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            display: "flex",
+            flexWrap: "nowrap"
+          }),
+        }}
         options={data.map(d => {
           return { value: d.id.toString(), label: d.name }
         })}
