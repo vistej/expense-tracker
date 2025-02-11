@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import DatePicker from "react-datepicker";
 import { Filter } from "../models/expense.model";
 

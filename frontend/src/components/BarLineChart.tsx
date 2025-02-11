@@ -52,6 +52,7 @@ const BarLineChart: FunctionComponent<BarLineChartProps> = ({ monthlyCosts }) =>
       {chartData &&
         (<div className="w-full  mx-auto h-96">
           <h2 className="text-center mb-4">Monthly Expenses</h2>
+          {/* @ts-expect-error */}
           <Bar data={chartData} options={options} />
         </div>)}
 

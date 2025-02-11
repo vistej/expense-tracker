@@ -4,9 +4,9 @@ import api from "../apis";
 import { Category, Expense } from "../models/expense.model";
 import { ACTIONS, ENDPOINTS } from "../constants";
 import { Controller, useForm } from "react-hook-form";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from "../utils/date";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export type ExpenseForm = {
   id?: number;
@@ -160,13 +160,14 @@ const AddExpenseDialog = ({
                     rules={{ required: "Date is required." }}
                     render={({ field, fieldState }) => (
                       <>
-
+                        {/* issue with date picker. follow up here https://github.com/Hacker0x01/react-datepicker/issues/5391 */}
+                        {/* @ts-expect-error */}
                         <DatePicker
                           {...field}
                           selected={field.value}
                           maxDate={new Date()}
                           showIcon
-                          onChange={(date) => field.onChange(date)}
+                          onChange={(date: Date | null) => field.onChange(date)}
                           className="w-full p-2 h-10.5 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                         />
                         {fieldState.error && <p className="text-red-500 text-sm">
