@@ -16,7 +16,7 @@ class Expense(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(default=now)
     description = models.TextField(null=True, blank=True)
-    recurring = models.BooleanField(default=now)
+    recurring = models.BooleanField(default=False)
     recurrence_period = models.CharField(choices=RECUR_OPTIONS, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
