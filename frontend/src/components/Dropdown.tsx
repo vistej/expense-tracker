@@ -28,7 +28,7 @@ const DropDown: FC<DropDownProps> = ({ data, onChange }) => {
     <>
       <label
         htmlFor="category_dropdown"
-        className="block text-[var(--color-muted-text)]"
+        className="block text-text-muted"
       >
         Category
       </label>

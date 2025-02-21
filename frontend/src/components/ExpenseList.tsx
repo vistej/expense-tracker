@@ -42,23 +42,23 @@ export const ExpenseList: FC<ExpenseListProps> = ({
         <div key={expense.id}>
           {/* Date Section */}
           {showDate && (
-            <div className="bg-[var(--color-background)] p-2">
-              <h2 className="text-sm font-semibold text-[var(--color-muted-text)]">
+            <div className="bg-background p-2">
+              <h2 className="text-sm font-semibold text-text-muted">
                 {formatDate(expense.date)}
               </h2>
             </div>
           )}
 
-          <div className="flex justify-between items-center bg-[var(--color-card-background)] shadow-md p-4 border-b border-[var(--color-border)]">
+          <div className="flex justify-between items-center bg-background-card shadow-md p-4 border-b border-border">
             {/* Left Section: Item Name, Category, Price */}
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
-              <p className="font-semibold text-[var(--color-text)]">
+              <p className="font-semibold text-text">
                 {expense.item_name}
               </p>
-              <p className="text-[var(--color-muted-text)] text-sm">
+              <p className="text-text-muted text-sm">
                 Category: {categoryMap[expense.category_id]}
               </p>
-              <p className="text-[var(--color-muted-text)] text-sm">
+              <p className="text-text-muted text-sm">
                 Price: ${expense.cost}
               </p>
             </div>
@@ -70,7 +70,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({
                   setAction(ACTIONS.EDIT);
                   setSelectedExpense(expense);
                 }}
-                className="bg-[var(--color-primary)] text-white px-3 py-1 rounded-md hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                className="bg-primary text-white px-3 py-1 rounded-md hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 Edit
               </button>
@@ -79,7 +79,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({
                   setAction(ACTIONS.DELETE);
                   setSelectedExpense(expense);
                 }}
-                className="bg-[var(--color-danger)] text-white px-3 py-1 rounded-md hover:bg-[var(--color-danger-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-danger)]"
+                className="bg-danger text-white px-3 py-1 rounded-md hover:bg-danger-hover focus:outline-none focus:ring-2 focus:ring-danger"
               >
                 Delete
               </button>

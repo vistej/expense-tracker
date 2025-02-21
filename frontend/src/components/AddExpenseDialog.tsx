@@ -90,15 +90,15 @@ const AddExpenseDialog = ({
       <div className="fixed inset-0 bg-gradient-to-b from-black to-transparent bg-opacity-50" />{" "}
       {/* Custom Overlay */}
       <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
-        <div className="bg-[var(--color-card-background)] p-6 rounded-lg w-xl shadow-lg">
-          <Dialog.Title className="text-xl font-bold text-[var(--color-text)] mb-4">
+        <div className="bg-background-card p-6 rounded-lg w-xl shadow-lg">
+          <Dialog.Title className="text-xl font-bold text-text mb-4">
             {title} Expense
           </Dialog.Title>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="mb-4">
               <label
                 htmlFor="item_name"
-                className="block text-[var(--color-muted-text)]"
+                className="block text-text-muted"
               >
                 Item Name
               </label>
@@ -108,7 +108,7 @@ const AddExpenseDialog = ({
                 {...register("item_name", {
                   required: "Item Name is required",
                 })}
-                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {errors.item_name && (
                 <p className="text-red-500 text-sm">
@@ -123,7 +123,7 @@ const AddExpenseDialog = ({
                 <div className="w-1/2">
                   <label
                     htmlFor="cost"
-                    className="block text-[var(--color-muted-text)]"
+                    className="block text-text-muted"
                   >
                     Cost
                   </label>
@@ -143,14 +143,14 @@ const AddExpenseDialog = ({
                       },
 
                     })}
-                    className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                    className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   {errors.cost && (
                     <p className="text-red-500 text-sm">{errors.cost.message}</p>
                   )}
                 </div>
                 <div className="w-1/2">
-                  <label htmlFor="date" className="w-full block text-[var(--color-muted-text)]">
+                  <label htmlFor="date" className="w-full block text-text-muted">
                     Date
                   </label>
                   <Controller
@@ -168,7 +168,7 @@ const AddExpenseDialog = ({
                           maxDate={new Date()}
                           showIcon
                           onChange={(date: Date | null) => field.onChange(date)}
-                          className="w-full p-2 h-10.5 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                          className="w-full p-2 h-10.5 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                         {fieldState.error && <p className="text-red-500 text-sm">
                           {fieldState.error.message}
@@ -185,7 +185,7 @@ const AddExpenseDialog = ({
             <div className="mb-4">
               <label
                 htmlFor="category"
-                className="block text-[var(--color-muted-text)]"
+                className="block text-text-muted"
               >
                 Category
               </label>
@@ -195,7 +195,7 @@ const AddExpenseDialog = ({
                   valueAsNumber: true,
                   validate: (val) => val > -1 || "Category is required",
                 })}
-                className="w-full p-2 border border-[var(--color-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {[{ id: -1, name: "Please select" }, ...categories].map(
                   (category) => (
@@ -218,13 +218,13 @@ const AddExpenseDialog = ({
                   reset({});
                   closeModal(null);
                 }}
-                className="px-4 py-2 bg-[var(--color-muted-text)] text-white rounded-md hover:bg-[var(--color-muted-text)]/80 transition-all ease-in-out"
+                className="px-4 py-2 bg-text-muted text-white rounded-md hover:bg-text-muted/80 transition-all ease-in-out"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover transition-all ease-in-out"
                 disabled={loading || !isDirty}
               >
                 {/* TODO button is disabled by isDirty. change it and show errors */}

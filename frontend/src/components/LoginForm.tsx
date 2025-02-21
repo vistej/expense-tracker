@@ -66,7 +66,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
               className={`p-2 border ${errors.username ? "border-red-500" : "border-gray-300"
                 } rounded-md focus:outline-none focus:ring-2 ${errors.username
                   ? "focus:ring-red-500"
-                  : "focus:ring-[var(--color-primary)]"
+                  : "focus:ring-primary"
                 }`}
               placeholder="Enter your username"
             />
@@ -98,7 +98,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
               className={`p-2 border ${errors.password ? "border-red-500" : "border-gray-300"
                 } rounded-md focus:outline-none focus:ring-2 ${errors.password
                   ? "focus:ring-red-500"
-                  : "focus:ring-[var(--color-primary)]"
+                  : "focus:ring-primary"
                 }`}
               placeholder="Enter your password"
             />
@@ -112,7 +112,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full p-2 bg-[var(--color-primary)] text-white font-semibold rounded-md hover:bg-[var(--color-primary)]/80 transition"
+            className="w-full p-2 bg-primary text-white font-semibold rounded-md hover:bg-primary/80 transition"
             disabled={loading}
           >
             {buttonText}
@@ -125,7 +125,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             Don't have an account?{" "}
             <button
               onClick={() => navigate(ROUTES.REGISTER)}
-              className="text-[var(--color-primary)] font-medium cursor-pointer hover:underline"
+              className="text-primary font-medium cursor-pointer hover:underline"
               disabled={loading}
             >
               Register
@@ -136,7 +136,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
             Already have an account?{" "}
             <button
               onClick={() => navigate(ROUTES.LOGIN)}
-              className="text-[var(--color-primary)] font-medium cursor-pointer hover:underline"
+              className="text-primary font-medium cursor-pointer hover:underline"
               disabled={loading}
             >
               Login

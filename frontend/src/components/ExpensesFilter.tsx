@@ -30,7 +30,7 @@ const ExpensesFilter: FC<ExpensesFilterProps> = ({ filter, updateFilter, onSearc
       <DropDown data={categories} onChange={setSelectedCategories} />
     </div>
     <button
-      className="w-full md:w-1/4 mt-6 py-1.5 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] transition-all ease-in-out"
+      className="w-full md:w-1/4 mt-6 py-1.5 bg-primary text-white rounded-md hover:bg-primary-hover transition-all ease-in-out"
       onClick={onSearch}
     >Search</button>
   </div>);

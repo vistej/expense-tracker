@@ -1,7 +1,6 @@
 import { FC } from "react";
 import DatePicker from "react-datepicker";
 import { Filter } from "../models/expense.model";
-
 interface DateRangeProps {
   filter: Filter,
   updateFilter: (filter: Filter) => void
@@ -13,12 +12,13 @@ const DateRange: FC<DateRangeProps> = ({ filter, updateFilter }) => {
     <div>
       <label
         htmlFor="start_date"
-        className="block text-[var(--color-muted-text)]"
+        className="block text-text-muted"
       >
         Start Date
       </label>
       <DatePicker
-        className="p-1.5 w-full border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        wrapperClassName=""
+        className="p-1.5 w-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
         selectsStart
         selected={filter.start_date}
         onChange={(date) => {
@@ -37,13 +37,13 @@ const DateRange: FC<DateRangeProps> = ({ filter, updateFilter }) => {
     <div>
       <label
         htmlFor="end_date"
-        className="block text-[var(--color-muted-text)]"
+        className="block text-text-muted"
       >
         End Date
       </label>
 
       <DatePicker
-        className="p-1.5 w-full border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        className="p-1.5 w-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
         selectsEnd
         selected={filter.end_date}
         startDate={filter.start_date}

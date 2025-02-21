@@ -23,8 +23,8 @@ const ConfirmationDialog: React.FC<IConfirmationDialogProps> = ({
 
         {/* Custom Overlay */}
         <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
-          <div className="bg-[var(--color-card-background)] p-6 rounded-lg w-sm">
-            <Dialog.Title className="text-xl font-bold mb-4 text-[var(--color-text)]">
+          <div className="bg-background-card p-6 rounded-lg w-sm">
+            <Dialog.Title className="text-xl font-bold mb-4 text-text">
               {title}
             </Dialog.Title>
 
@@ -32,13 +32,13 @@ const ConfirmationDialog: React.FC<IConfirmationDialogProps> = ({
             <div className="mt-4 flex justify-end space-x-3">
               <button
                 onClick={() => handleClose(false)}
-                className="px-4 py-2 bg-[var(--color-muted-button)] text-[var(--color-muted-text)] rounded-md hover:bg-[var(--color-muted-button-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-muted-button)]"
+                className="px-4 py-2 bg-muted-button text-text-muted rounded-md hover:bg-muted-button-hover focus:outline-none focus:ring-2 focus:ring-muted-button"
               >
                 No
               </button>
               <button
                 onClick={() => handleClose(true)}
-                className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 Yes
               </button>
