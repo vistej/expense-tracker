@@ -1,5 +1,5 @@
 import { FC } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker from "react-tailwindcss-datepicker";
 import { Filter } from "../models/expense.model";
 interface DateRangeProps {
   filter: Filter,
@@ -8,58 +8,31 @@ interface DateRangeProps {
 
 const DateRange: FC<DateRangeProps> = ({ filter, updateFilter }) => {
 
-  return (<div className="flex flex-col md:flex-row">
+  return (<>
     <div>
       <label
         htmlFor="start_date"
         className="block text-text-muted"
       >
-        Start Date
+        Date Range
       </label>
       <DatePicker
-        wrapperClassName=""
-        className="p-1.5 w-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-        selectsStart
-        selected={filter.start_date}
+        separator="-"
+        readOnly={true}
+        inputClassName="p-1.5 w-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+        value={{ startDate: filter.start_date, endDate: filter.end_date }}
         onChange={(date) => {
-          if (date) {
-            const nf: Filter = { ...filter, start_date: date }
-            if (nf.end_date < date) {
-              nf.end_date = date
-            }
+          if (date && date.startDate && date.endDate) {
+            const nf: Filter = { ...filter, start_date: date.startDate, end_date: date.endDate }
             updateFilter(nf)
           }
-        }}
-        startDate={filter.start_date}
-        endDate={filter.end_date}
-      />
-    </div>
-    <div>
-      <label
-        htmlFor="end_date"
-        className="block text-text-muted"
-      >
-        End Date
-      </label>
-
-      <DatePicker
-        className="p-1.5 w-full border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-        selectsEnd
-        selected={filter.end_date}
-        startDate={filter.start_date}
-        endDate={filter.end_date}
-        minDate={filter.start_date}
-        onChange={(date) => {
-          if (date) {
-            const nf: Filter = { ...filter, end_date: date }
-            updateFilter(nf)
-          }
-        }}
+        }
+        }
       />
     </div>
 
 
-  </div>);
+  </>);
 }
 
 export default DateRange;

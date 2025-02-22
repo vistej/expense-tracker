@@ -5,8 +5,7 @@ import { Category, Expense } from "../models/expense.model";
 import { ACTIONS, ENDPOINTS } from "../constants";
 import { Controller, useForm } from "react-hook-form";
 import { formatDate } from "../utils/date";
-import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-tailwindcss-datepicker";
 
 export type ExpenseForm = {
   id?: number;
@@ -118,9 +117,9 @@ const AddExpenseDialog = ({
             </div>
 
             <div className="mb-4">
-              <div className="flex space-x-2">
+              <div className="flex flex-col md:flex-row md:space-x-2">
 
-                <div className="w-1/2">
+                <div className="w-full md:w-1/2 mb-4 md:mb-0">
                   <label
                     htmlFor="cost"
                     className="block text-text-muted"
@@ -149,7 +148,7 @@ const AddExpenseDialog = ({
                     <p className="text-red-500 text-sm">{errors.cost.message}</p>
                   )}
                 </div>
-                <div className="w-1/2">
+                <div className="w-full md:w-1/2">
                   <label htmlFor="date" className="w-full block text-text-muted">
                     Date
                   </label>
@@ -160,15 +159,15 @@ const AddExpenseDialog = ({
                     rules={{ required: "Date is required." }}
                     render={({ field, fieldState }) => (
                       <>
-                        {/* issue with date picker. follow up here https://github.com/Hacker0x01/react-datepicker/issues/5391 */}
-                        {/* @ts-expect-error */}
                         <DatePicker
                           {...field}
-                          selected={field.value}
+                          asSingle={true}
+                          useRange={false}
+                          readOnly={true}
                           maxDate={new Date()}
-                          showIcon
-                          onChange={(date: Date | null) => field.onChange(date)}
-                          className="w-full p-2 h-10.5 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                          value={{ startDate: field.value, endDate: field.value }}
+                          onChange={(date) => field.onChange(date?.startDate)}
+                          inputClassName="w-full p-2 h-10.5 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                         {fieldState.error && <p className="text-red-500 text-sm">
                           {fieldState.error.message}
