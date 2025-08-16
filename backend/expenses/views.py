@@ -8,8 +8,8 @@ from django.db.models import Sum
 from rest_framework.views import APIView
 from django.db.models.functions import TruncMonth
 from rest_framework.response import Response
-from datetime import datetime
-
+from datetime import datetime, timedelta
+from django.utils import timezone
 # Create your views here.
 
 class CategoryList(generics.ListAPIView):
@@ -79,13 +79,48 @@ class ExpenseMonthly(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        # Calculate date 12 months ago
+        current_date = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        if current_date.month <= 12:
+            twelve_months_ago = current_date.replace(year=current_date.year - 1, month=current_date.month)
+        else:
+            twelve_months_ago = current_date.replace(month=current_date.month - 12)
+        
+        # Get expenses for the last 12 months
         expenses = (
-                    Expense.objects.filter(created_by=user)
+                    Expense.objects.filter(
+                        created_by=user,
+                        created_at__gte=twelve_months_ago
+                    )
                     .annotate(month=TruncMonth('created_at'))
                     .values('month')
                     .annotate(total_cost=Sum('cost'))
                     .order_by('month')
                 )
-        serializer = ExpenseMonthlySerializer(expenses, many=True)
+        # Create a dictionary of month: total_cost for existing data
+        # Convert month keys to date objects for consistent comparison
+        expense_dict = {}
+        for expense in expenses:
+            month_date = expense['month'].replace(hour=0, minute=0, second=0, microsecond=0)
+            expense_dict[month_date] = expense['total_cost']
+        # Generate all 12 months with default zero values
+        all_months = []
+        current_date = twelve_months_ago.replace(day=1)
+        
+        for _ in range(12):
+            month_start = current_date.replace(day=1)
+            month_key = month_start.replace(day=1)
+            
+            all_months.append({
+                'month': month_key,
+                'total_cost': expense_dict.get(month_key, 0)
+            })
+            
+            # Move to next month
+            if current_date.month == 12:
+                current_date = current_date.replace(year=current_date.year + 1, month=1)
+            else:
+                current_date = current_date.replace(month=current_date.month + 1)
+        serializer = ExpenseMonthlySerializer(all_months, many=True)
         return Response(serializer.data)
         
