@@ -6,18 +6,60 @@ import {
 } from "../models/dashboard.model";
 import { Doughnut } from "react-chartjs-2";
 import { useCategories } from "../context/categoryContext";
+import { useTheme } from "../context/ThemeContext";
+import { chartColors, getChartOptions } from "../ChartSetup";
 
 type Props = {
   categoryCosts: CategoryCost[];
 };
+
 export const CategoryChart = ({ categoryCosts }: Props) => {
   const { categories } = useCategories();
+  const { theme } = useTheme();
   const [costData, setCostData] = useState<CategoryCostObject>({});
   const [chartData, setChartData] = useState<DoughnutChartData | null>(null);
+
+  // Enhanced chart options with theme support
+  const baseOptions = getChartOptions(theme === 'dark');
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
+    ...baseOptions,
+    plugins: {
+      ...baseOptions.plugins,
+      legend: {
+        ...baseOptions.plugins?.legend,
+        position: 'bottom' as const,
+        labels: {
+          ...baseOptions.plugins?.legend?.labels,
+          padding: 15,
+          usePointStyle: true,
+          pointStyle: 'circle',
+        },
+      },
+      tooltip: {
+        ...baseOptions.plugins?.tooltip,
+        callbacks: {
+          label: function (context: { label?: string; parsed: number; dataset: { data: number[] } }) {
+            const label = context.label || '';
+            const value = context.parsed;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+          },
+        },
+      },
+    },
+    elements: {
+      arc: {
+        borderWidth: 2,
+        borderColor: theme === 'dark' ? '#1e293b' : '#ffffff',
+      },
+    },
   };
+
+  // Force chart re-render when theme changes
+  useEffect(() => {
+    // This will trigger a re-render of the chart with new theme options
+  }, [theme]);
 
   useEffect(() => {
     const costObj = {} as CategoryCostObject;
@@ -42,43 +84,54 @@ export const CategoryChart = ({ categoryCosts }: Props) => {
             (acc, curr) => acc + Number(curr.total_cost),
             0
           );
-
           data.push(totalCost);
         }
       });
+
+      // Use the new chart colors
+      const backgroundColors = [
+        chartColors.chart1,
+        chartColors.chart2,
+        chartColors.chart3,
+        chartColors.chart4,
+        chartColors.chart5,
+        chartColors.chart6,
+        chartColors.chart7,
+        chartColors.chart8,
+        chartColors.primary,
+        chartColors.secondary,
+      ];
+
       setChartData({
         labels,
         datasets: [
           {
             label: "Expenses",
             data,
-            backgroundColor: [
-              "#D1C6B1",
-              "#9E9E9E",
-              "#B3C8B3",
-              "#D4A5A5",
-              "#A1B2C1",
-              "#F0D0A1",
-              "#D9E2E1",
-              "#C2D8D2",
-              "#E6D9C6",
-              "#C3B4B8",
-            ],
-            borderColor: "#FFFFFF", // Optional: for a clean, white border around each segment
-            borderWidth: 1,
+            backgroundColor: backgroundColors.slice(0, data.length),
+            borderColor: theme === 'dark' ? '#1e293b' : '#ffffff',
+            borderWidth: 2,
+            hoverOffset: 4,
           },
         ],
       });
     }
   }, [costData, categories]);
-  return (
-    <div>
-      {chartData && (
-        <div className="w-full  mx-auto h-96">
-          <h2 className="text-center mb-4">Category Wise Expenses</h2>
-          <Doughnut data={chartData} options={options} />
+
+  if (!chartData) {
+    return (
+      <div className="flex items-center justify-center h-80">
+        <div className="text-center text-text-muted">
+          <div className="w-16 h-16 border-4 border-primary-100 border-t-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p>Loading chart data...</p>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-full">
+      <Doughnut data={chartData} options={options} />
     </div>
   );
 };

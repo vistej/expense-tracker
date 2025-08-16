@@ -1,4 +1,4 @@
-import { Dialog, Select } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import api from "../apis";
 import { Category, Expense } from "../models/expense.model";
@@ -6,6 +6,15 @@ import { ACTIONS, ENDPOINTS } from "../constants";
 import { Controller, useForm } from "react-hook-form";
 import { formatDate } from "../utils/date";
 import DatePicker from "react-tailwindcss-datepicker";
+import {
+  XMarkIcon,
+  ReceiptRefundIcon,
+  CurrencyDollarIcon,
+  CalendarIcon,
+  TagIcon,
+  DocumentTextIcon,
+  ClockIcon
+} from "@heroicons/react/24/outline";
 
 export type ExpenseForm = {
   id?: number;
@@ -13,6 +22,9 @@ export type ExpenseForm = {
   category_id: number;
   cost: number;
   date: Date;
+  description?: string;
+  recurring?: boolean;
+  recurrence_period?: string;
 };
 
 const AddExpenseDialog = ({
@@ -34,20 +46,49 @@ const AddExpenseDialog = ({
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
-  } = useForm<ExpenseForm>();
+    watch,
+    formState: { errors, isValid },
+  } = useForm<ExpenseForm>({
+    mode: "onChange",
+    defaultValues: {
+      item_name: "",
+      category_id: -1,
+      cost: 0,
+      date: new Date(),
+      description: "",
+      recurring: false,
+      recurrence_period: "",
+    },
+  });
+
+  const isRecurring = watch("recurring");
+
   useEffect(() => {
     if (expense) {
-      reset({ ...expense, date: new Date(expense.date) });
+      reset({
+        ...expense,
+        date: new Date(expense.date),
+        description: expense.description || "",
+        recurring: expense.recurring || false,
+        recurrence_period: expense.recurrence_period || "",
+      });
     } else {
-      reset({});
+      reset({
+        item_name: "",
+        category_id: -1,
+        cost: 0,
+        date: new Date(),
+        description: "",
+        recurring: false,
+        recurrence_period: "",
+      });
     }
   }, [isOpen, expense, reset]);
 
   const addExpense = async (data: ExpenseForm) => {
-    const expense = { ...data, date: formatDate(data.date) }
+    const expenseData = { ...data, date: formatDate(data.date) };
     try {
-      const res = await api.post(ENDPOINTS.CREATE_EXPENSE, expense);
+      const res = await api.post(ENDPOINTS.CREATE_EXPENSE, expenseData);
       reset({});
       closeModal(res.data);
     } catch (error) {
@@ -58,11 +99,11 @@ const AddExpenseDialog = ({
   };
 
   const updateExpense = async (data: ExpenseForm) => {
-    const expense = { ...data, date: formatDate(data.date) }
+    const expenseData = { ...data, date: formatDate(data.date) };
     try {
       const res = await api.patch(
-        ENDPOINTS.UPDATE_EXPENSE + expense.id + "/",
-        expense
+        ENDPOINTS.UPDATE_EXPENSE + expenseData.id + "/",
+        expenseData
       );
       if (res) {
         reset({});
@@ -84,155 +125,262 @@ const AddExpenseDialog = ({
     }
   };
 
+  const handleClose = () => {
+    reset({});
+    closeModal(null);
+  };
+
   return (
-    <Dialog open={isOpen} onClose={() => closeModal(null)}>
-      <div className="fixed inset-0 bg-gradient-to-b from-black to-transparent bg-opacity-50" />{" "}
-      {/* Custom Overlay */}
-      <Dialog.Panel className="fixed inset-0 flex justify-center items-center p-4">
-        <div className="bg-background-card p-6 rounded-lg w-xl shadow-lg">
-          <Dialog.Title className="text-xl font-bold text-text mb-4">
-            {title} Expense
-          </Dialog.Title>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="mb-4">
-              <label
-                htmlFor="item_name"
-                className="block text-text-muted"
-              >
-                Item Name
+    <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
+
+      {/* Dialog */}
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Panel className="w-full max-w-2xl bg-background-card rounded-2xl shadow-large border border-border">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center">
+                <ReceiptRefundIcon className="w-6 h-6 text-primary-600" />
+              </div>
+              <div>
+                <Dialog.Title className="text-xl font-display font-semibold text-text">
+                  {title === ACTIONS.EDIT ? "Edit" : "Add New"} Expense
+                </Dialog.Title>
+                <p className="text-sm text-text-muted">
+                  {title === ACTIONS.EDIT ? "Update your expense details" : "Enter the details of your new expense"}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleClose}
+              className="p-2 text-text-muted hover:text-text hover:bg-neutral-100 rounded-lg transition-colors duration-200"
+            >
+              <XMarkIcon className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+            {/* Item Name */}
+            <div>
+              <label htmlFor="item_name" className="block text-sm font-medium text-text mb-2">
+                <div className="flex items-center space-x-2">
+                  <ReceiptRefundIcon className="w-4 h-4 text-primary-500" />
+                  <span>Item Name</span>
+                </div>
               </label>
               <input
                 id="item_name"
                 type="text"
+                placeholder="e.g., Groceries, Gas, Restaurant"
                 {...register("item_name", {
-                  required: "Item Name is required",
+                  required: "Item name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Item name must be at least 2 characters",
+                  },
                 })}
-                className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className={`input-field ${errors.item_name ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
               />
               {errors.item_name && (
-                <p className="text-red-500 text-sm">
-                  {errors.item_name.message}
+                <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+                  <span>⚠</span>
+                  <span>{errors.item_name.message}</span>
                 </p>
               )}
             </div>
 
-            <div className="mb-4">
-              <div className="flex flex-col md:flex-row md:space-x-2">
-
-                <div className="w-full md:w-1/2 mb-4 md:mb-0">
-                  <label
-                    htmlFor="cost"
-                    className="block text-text-muted"
-                  >
-                    Cost
-                  </label>
+            {/* Cost and Date Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Cost */}
+              <div>
+                <label htmlFor="cost" className="block text-sm font-medium text-text mb-2">
+                  <div className="flex items-center space-x-2">
+                    <CurrencyDollarIcon className="w-4 h-4 text-primary-500" />
+                    <span>Cost</span>
+                  </div>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted">
+                    $
+                  </span>
                   <input
                     id="cost"
                     type="number"
                     step="0.01"
+                    min="0"
+                    placeholder="0.00"
                     {...register("cost", {
                       required: "Cost is required",
                       valueAsNumber: true,
+                      min: {
+                        value: 0.01,
+                        message: "Cost must be greater than 0",
+                      },
                       validate: (value) =>
                         /^\d+(\.\d{1,2})?$/.test(value.toString()) || "Cost must have at most two decimal places",
-
-                      min: {
-                        value: 0,
-                        message: "Cost must be greater than or equal to 0",
-                      },
-
                     })}
-                    className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className={`input-field pl-8 ${errors.cost ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
                   />
-                  {errors.cost && (
-                    <p className="text-red-500 text-sm">{errors.cost.message}</p>
-                  )}
                 </div>
-                <div className="w-full md:w-1/2">
-                  <label htmlFor="date" className="w-full block text-text-muted">
-                    Date
-                  </label>
-                  <Controller
-                    name="date"
-                    control={control}
-                    defaultValue={new Date()}
-                    rules={{ required: "Date is required." }}
-                    render={({ field, fieldState }) => (
-                      <>
-                        <DatePicker
-                          {...field}
-                          asSingle={true}
-                          useRange={false}
-                          readOnly={true}
-                          maxDate={new Date()}
-                          value={{ startDate: field.value, endDate: field.value }}
-                          onChange={(date) => field.onChange(date?.startDate)}
-                          inputClassName="w-full p-2 h-10.5 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        {fieldState.error && <p className="text-red-500 text-sm">
-                          {fieldState.error.message}
-                        </p>}
-                      </>
-                    )}
-                  >
+                {errors.cost && (
+                  <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+                    <span>⚠</span>
+                    <span>{errors.cost.message}</span>
+                  </p>
+                )}
+              </div>
 
-                  </Controller>
-                </div>
+              {/* Date */}
+              <div>
+                <label htmlFor="date" className="block text-sm font-medium text-text mb-2">
+                  <div className="flex items-center space-x-2">
+                    <CalendarIcon className="w-4 h-4 text-primary-500" />
+                    <span>Date</span>
+                  </div>
+                </label>
+                <Controller
+                  name="date"
+                  control={control}
+                  rules={{ required: "Date is required" }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <DatePicker
+                        {...field}
+                        asSingle={true}
+                        useRange={false}
+                        readOnly={true}
+                        maxDate={new Date()}
+                        value={{ startDate: field.value, endDate: field.value }}
+                        onChange={(date) => field.onChange(date?.startDate)}
+                        inputClassName={`input-field ${fieldState.error ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
+                      />
+                      {fieldState.error && (
+                        <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+                          <span>⚠</span>
+                          <span>{fieldState.error.message}</span>
+                        </p>
+                      )}
+                    </>
+                  )}
+                />
               </div>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="category"
-                className="block text-text-muted"
-              >
-                Category
+            {/* Category */}
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-text mb-2">
+                <div className="flex items-center space-x-2">
+                  <TagIcon className="w-4 h-4 text-primary-500" />
+                  <span>Category</span>
+                </div>
               </label>
-              <Select
+              <select
                 {...register("category_id", {
                   required: "Category is required",
                   valueAsNumber: true,
-                  validate: (val) => val > -1 || "Category is required",
+                  validate: (val) => val > -1 || "Please select a category",
                 })}
-                className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className={`input-field ${errors.category_id ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
               >
-                {[{ id: -1, name: "Please select" }, ...categories].map(
-                  (category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  )
-                )}
-              </Select>
+                <option value={-1}>Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
               {errors.category_id && (
-                <p className="text-red-500 text-sm">
-                  {errors.category_id.message}
+                <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+                  <span>⚠</span>
+                  <span>{errors.category_id.message}</span>
                 </p>
               )}
             </div>
 
-            <div className="flex justify-end space-x-2">
+            {/* Description */}
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-text mb-2">
+                <div className="flex items-center space-x-2">
+                  <DocumentTextIcon className="w-4 h-4 text-primary-500" />
+                  <span>Description (Optional)</span>
+                </div>
+              </label>
+              <textarea
+                id="description"
+                rows={3}
+                placeholder="Add any additional details about this expense..."
+                {...register("description")}
+                className="input-field resize-none"
+              />
+            </div>
+
+            {/* Recurring Options */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="recurring"
+                  {...register("recurring")}
+                  className="w-4 h-4 text-primary-600 border-border rounded focus:ring-primary-500 focus:ring-2"
+                />
+                <label htmlFor="recurring" className="flex items-center space-x-2 text-sm font-medium text-text">
+                  <ClockIcon className="w-4 h-4 text-accent-500" />
+                  <span>This is a recurring expense</span>
+                </label>
+              </div>
+
+              {isRecurring && (
+                <div className="ml-7">
+                  <label htmlFor="recurrence_period" className="block text-sm font-medium text-text mb-2">
+                    Recurrence Period
+                  </label>
+                  <select
+                    {...register("recurrence_period")}
+                    className="input-field"
+                  >
+                    <option value="weekly">Weekly</option>
+                    <option value="">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row-reverse gap-3 pt-6 border-t border-border">
               <button
-                onClick={() => {
-                  reset({});
-                  closeModal(null);
-                }}
-                className="px-4 py-2 bg-text-muted text-white rounded-md hover:bg-text-muted/80 transition-all ease-in-out"
+                type="submit"
+                disabled={loading || !isValid}
+                className="btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Saving...</span>
+                  </>
+                ) : (
+                  <>
+                    <ReceiptRefundIcon className="w-4 h-4" />
+                    <span>{title === ACTIONS.EDIT ? "Update" : "Add"} Expense</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleClose}
+                className="btn-outline"
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover transition-all ease-in-out"
-                disabled={loading || !isDirty}
-              >
-                {/* TODO button is disabled by isDirty. change it and show errors */}
-                {loading ? 'Saving' : title} Expense
-              </button>
             </div>
           </form>
-        </div>
-      </Dialog.Panel>
+        </Dialog.Panel>
+      </div>
     </Dialog>
   );
 };

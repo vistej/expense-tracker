@@ -1,15 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 
-body::-webkit-scrollbar {
-  display: none;
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-background text-text antialiased transition-colors duration-200;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Dark theme overrides */
+  .dark body {
+    @apply bg-dark-background text-dark-text;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+
+  h5 {
+    @apply text-base md:text-lg;
+  }
+
+  h6 {
+    @apply text-sm md:text-base;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100 dark:bg-dark-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 dark:bg-dark-border-hover rounded-full hover:bg-neutral-400 dark:hover:bg-dark-text-muted transition-colors;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-background dark:ring-offset-dark-background;
+  }
+
+  /* Button focus styles */
+  button:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2 ring-offset-background dark:ring-offset-dark-background;
+  }
+
+  /* Input focus styles */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2 ring-offset-background dark:ring-offset-dark-background border-primary-500;
+  }
 }
 
-body {
-  scrollbar-width: none;
-} */
+@layer components {
+  /* Card component */
+  .card {
+    @apply bg-background-card dark:bg-dark-background-card rounded-xl border border-border dark:border-dark-border shadow-soft dark:shadow-dark-soft p-6 transition-colors duration-200;
+  }
+
+  .card-elevated {
+    @apply bg-background-elevated dark:bg-dark-background-elevated rounded-xl border border-border dark:border-dark-border shadow-medium dark:shadow-dark-medium p-6 transition-colors duration-200;
+  }
+
+  /* Button components */
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-medium px-4 py-2.5 rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:shadow-dark-soft dark:hover:shadow-dark-medium dark:focus:ring-offset-dark-background;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-500 hover:bg-secondary-600 text-white font-medium px-4 py-2.5 rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 dark:shadow-dark-soft dark:hover:shadow-dark-medium dark:focus:ring-offset-dark-background;
+  }
+
+  .btn-outline {
+    @apply border border-border dark:border-dark-border hover:border-primary-500 dark:hover:border-primary-500 text-text dark:text-dark-text hover:text-primary-600 dark:hover:text-primary-600 font-medium px-4 py-2.5 rounded-lg transition-all duration-200 bg-transparent hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-background;
+  }
+
+  .btn-ghost {
+    @apply text-text dark:text-dark-text hover:text-primary-600 dark:hover:text-primary-600 font-medium px-4 py-2.5 rounded-lg transition-all duration-200 bg-transparent hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-background;
+  }
+
+  /* Input components */
+  .input-field {
+    @apply w-full px-4 py-3 border border-border dark:border-dark-border rounded-lg bg-background-card dark:bg-dark-background-card text-text dark:text-dark-text placeholder-text-muted dark:placeholder-dark-text-muted focus:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-dark-background transition-all duration-200;
+  }
+
+  .input-field:focus {
+    @apply outline-none;
+  }
+
+  /* Badge components */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary-100 dark:bg-secondary-900/30 text-secondary-800 dark:text-secondary-200;
+  }
+
+  .badge-success {
+    @apply bg-success-light dark:bg-success-900/30 text-success-800 dark:text-success-200;
+  }
+
+  .badge-warning {
+    @apply bg-warning-light dark:bg-warning-900/30 text-warning-800 dark:text-warning-200;
+  }
+
+  .badge-danger {
+    @apply bg-danger-light dark:bg-danger-900/30 text-danger-800 dark:text-danger-200;
+  }
+
+  /* Animation classes */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+@layer utilities {
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient utilities */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600;
+  }
+
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600;
+  }
+
+  .bg-gradient-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 dark:bg-dark-background-card/80 backdrop-blur-sm border border-white/20 dark:border-dark-border/20;
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-200 hover:shadow-large dark:hover:shadow-dark-large;
+  }
+}
 
 /* Remove spinner buttons for number inputs */
 input[type="number"]::-webkit-inner-spin-button,
@@ -20,4 +206,67 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield; /* For Firefox */
+}
+
+/* Date picker customization */
+.react-tailwindcss-datepicker {
+  @apply font-sans;
+}
+
+.react-tailwindcss-datepicker input {
+  @apply input-field;
+}
+
+/* Chart customization */
+.chart-container {
+  @apply bg-background-card dark:bg-dark-background-card rounded-xl border border-border dark:border-dark-border shadow-soft dark:shadow-dark-soft p-6 transition-colors duration-200;
+}
+
+/* Loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-neutral-200 dark:bg-dark-border rounded;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .card {
+    @apply p-4;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline,
+  .btn-ghost {
+    @apply px-3 py-2 text-sm;
+  }
+}
+
+/* Theme transition utilities */
+.theme-transition {
+  @apply transition-colors duration-200 ease-in-out;
+}
+
+/* Dark mode specific overrides */
+.dark .bg-background {
+  @apply bg-dark-background;
+}
+
+.dark .bg-background-card {
+  @apply bg-dark-background-card;
+}
+
+.dark .bg-background-elevated {
+  @apply bg-dark-background-elevated;
+}
+
+.dark .text-text {
+  @apply text-dark-text;
+}
+
+.dark .text-text-muted {
+  @apply text-dark-text-muted;
+}
+
+.dark .border-border {
+  @apply border-dark-border;
 }

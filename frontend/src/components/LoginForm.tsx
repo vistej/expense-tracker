@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants";
 import { FieldValues, useForm } from "react-hook-form";
+import { UserIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 interface ILoginFormProps {
   title: string;
@@ -16,14 +17,20 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   onSubmit,
   loading,
 }) => {
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const onHandleSubmit = (e: FieldValues) => {
     const username = e.username;
@@ -32,120 +39,146 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   };
 
   return (
-    <div
-      style={{ minHeight: "calc(100vh - 5rem)" }}
-      className="flex flex-col items-center bg-gray-100 bg-opacity-50 backdrop-blur-lg"
-    >
-      <h1 className="text-4xl py-20 font-bold text-black mb-6 sm:text-5xl md:text-6xl lg:text-7xl">
-        Expense Tracker
-      </h1>
-
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">
-          {title}
-        </h1>
-        <form onSubmit={handleSubmit(onHandleSubmit)} className="flex flex-col gap-4">
-          {/* Username Field */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="username"
-              className="text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
+    <div className="w-full">
+      <form onSubmit={handleSubmit(onHandleSubmit)} className="space-y-6">
+        {/* Username Field */}
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-text dark:text-dark-text mb-2"
+          >
+            Username
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <UserIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
+            </div>
             <input
               type="text"
               id="username"
               {...register("username", {
                 required: "Username is required",
                 minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
+                  value: 1,
+                  message: "Username cannot be empty",
                 },
               })}
-              className={`p-2 border ${errors.username ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 ${errors.username
-                  ? "focus:ring-red-500"
-                  : "focus:ring-primary"
-                }`}
+              className={`input-field pl-10 ${errors.username ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
               placeholder="Enter your username"
+              autoComplete="username"
             />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.username.message as string}
-              </p>
-            )}
           </div>
+          {errors.username && (
+            <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+              <span>⚠</span>
+              <span>{errors.username.message as string}</span>
+            </p>
+          )}
+        </div>
 
-          {/* Password Field */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
+        {/* Password Field */}
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-text dark:text-dark-text mb-2"
+          >
+            Password
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <LockClosedIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
+            </div>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
+                  value: 1,
+                  message: "Password cannot be empty",
                 },
               })}
-              className={`p-2 border ${errors.password ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 ${errors.password
-                  ? "focus:ring-red-500"
-                  : "focus:ring-primary"
-                }`}
+              className={`input-field pl-10 pr-10 ${errors.password ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
               placeholder="Enter your password"
+              autoComplete="current-password"
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message as string}
-              </p>
-            )}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
+              ) : (
+                <EyeIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
+              )}
+            </button>
           </div>
+          {errors.password && (
+            <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+              <span>⚠</span>
+              <span>{errors.password.message as string}</span>
+            </p>
+          )}
+        </div>
 
-          {/* Submit Button */}
+        {/* Remember Me & Forgot Password */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              id="remember"
+              {...register("remember")}
+              className="w-4 h-4 text-primary-600 border-border dark:border-dark-border rounded focus:ring-primary-500 focus:ring-2"
+            />
+            <label htmlFor="remember" className="text-sm text-text dark:text-dark-text">
+              Remember me
+            </label>
+          </div>
           <button
-            type="submit"
-            className="w-full p-2 bg-primary text-white font-semibold rounded-md hover:bg-primary/80 transition"
+            type="button"
+            onClick={() => navigate(ROUTES.REGISTER)} // You can change this to a forgot password route
+            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium hover:underline transition-colors duration-200"
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading || !isValid}
+          className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+        >
+          {loading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+              Signing in...
+            </>
+          ) : (
+            <>
+              <LockClosedIcon className="w-5 h-5 mr-2" />
+              {buttonText}
+            </>
+          )}
+        </button>
+      </form>
+
+      {/* Footer Links */}
+      <div className="mt-6 text-center">
+        <p className="text-sm text-text-muted dark:text-dark-text-muted">
+          Don't have an account?{" "}
+          <button
+            onClick={() => navigate(ROUTES.REGISTER)}
+            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium hover:underline transition-colors duration-200"
             disabled={loading}
           >
-            {buttonText}
+            Sign up here
           </button>
-        </form>
-
-        {/* Footer Links */}
-        {title === "Login" ? (
-          <p className="text-sm text-gray-700 mt-4">
-            Don't have an account?{" "}
-            <button
-              onClick={() => navigate(ROUTES.REGISTER)}
-              className="text-primary font-medium cursor-pointer hover:underline"
-              disabled={loading}
-            >
-              Register
-            </button>
-          </p>
-        ) : (
-          <p className="text-sm text-gray-700 mt-4">
-            Already have an account?{" "}
-            <button
-              onClick={() => navigate(ROUTES.LOGIN)}
-              className="text-primary font-medium cursor-pointer hover:underline"
-              disabled={loading}
-            >
-              Login
-            </button>
-          </p>
-        )}
+        </p>
       </div>
     </div>
   );
-}
+};
 
 export default LoginForm;
