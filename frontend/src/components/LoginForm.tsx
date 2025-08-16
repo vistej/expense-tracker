@@ -5,14 +5,12 @@ import { FieldValues, useForm } from "react-hook-form";
 import { UserIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 interface ILoginFormProps {
-  title: string;
   buttonText: string;
-  onSubmit: (username: string, password: string) => void;
+  onSubmit: (email: string, password: string) => void;
   loading: boolean;
 }
 
 const LoginForm: React.FC<ILoginFormProps> = ({
-  title,
   buttonText,
   onSubmit,
   loading,
@@ -24,7 +22,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -33,45 +31,45 @@ const LoginForm: React.FC<ILoginFormProps> = ({
   const [showPassword, setShowPassword] = React.useState(false);
 
   const onHandleSubmit = (e: FieldValues) => {
-    const username = e.username;
+    const email = e.email;
     const password = e.password;
-    onSubmit(username, password);
+    onSubmit(email, password);
   };
 
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit(onHandleSubmit)} className="space-y-6">
-        {/* Username Field */}
+        {/* Email Field */}
         <div>
           <label
-            htmlFor="username"
+            htmlFor="email"
             className="block text-sm font-medium text-text dark:text-dark-text mb-2"
           >
-            Username
+            Email Address
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UserIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
             </div>
             <input
-              type="text"
-              id="username"
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 1,
-                  message: "Username cannot be empty",
+              type="email"
+              id="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Please enter a valid email address",
                 },
               })}
-              className={`input-field pl-10 ${errors.username ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
-              placeholder="Enter your username"
-              autoComplete="username"
+              className={`input-field pl-10 ${errors.email ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
+              placeholder="Enter your email address"
+              autoComplete="email"
             />
           </div>
-          {errors.username && (
+          {errors.email && (
             <p className="mt-2 text-sm text-danger flex items-center space-x-1">
               <span>⚠</span>
-              <span>{errors.username.message as string}</span>
+              <span>{errors.email.message as string}</span>
             </p>
           )}
         </div>
@@ -123,7 +121,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
         </div>
 
         {/* Remember Me & Forgot Password */}
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <input
               type="checkbox"
@@ -142,7 +140,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({
           >
             Forgot password?
           </button>
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <button

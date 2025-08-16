@@ -10,10 +10,12 @@ export const Register: FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit = async (username: string, email: string, password: string) => {
+  const handleSubmit = async (firstName: string, lastName: string, email: string, password: string) => {
     setLoading(true);
     const body = {
-      username: username,
+      username: email,
+      first_name: firstName,
+      last_name: lastName,
       email: email,
       password: password,
     };
@@ -28,8 +30,10 @@ export const Register: FC = () => {
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         // Handle different types of validation errors
-        if (error.response.data.username) {
-          alert(`Username error: ${error.response.data.username[0]}`);
+        if (error.response.data.first_name) {
+          alert(`First name error: ${error.response.data.first_name[0]}`);
+        } else if (error.response.data.last_name) {
+          alert(`Last name error: ${error.response.data.last_name[0]}`);
         } else if (error.response.data.email) {
           alert(`Email error: ${error.response.data.email[0]}`);
         } else if (error.response.data.password) {
@@ -67,7 +71,6 @@ export const Register: FC = () => {
         {/* Registration Form */}
         <div className="card-elevated">
           <RegisterForm
-            title="Create Account"
             buttonText="Create Account"
             onSubmit={handleSubmit}
             loading={loading}

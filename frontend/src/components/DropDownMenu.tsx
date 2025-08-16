@@ -27,7 +27,7 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
               <UserIcon className="w-5 h-5 text-white" />
             </div>
-            <span className="font-medium">{user.username}</span>
+            <span className="font-medium">{user.first_name}</span>
             <ChevronDownIcon className="w-4 h-4 transition-transform duration-200" />
           </Menu.Button>
 
@@ -48,7 +48,7 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
                     <UserIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-text dark:text-dark-text">{user.username}</p>
+                    <p className="font-medium text-text dark:text-dark-text">{user.first_name}</p>
                     <p className="text-sm text-text-muted dark:text-dark-text-muted">User Account</p>
                   </div>
                 </div>
@@ -62,8 +62,8 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
                     <button
                       onClick={toggleTheme}
                       className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors duration-200 ${active
-                          ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                          : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
+                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
+                        : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
                         }`}
                     >
                       <div className="flex items-center space-x-3">
@@ -89,8 +89,8 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
                     <button
                       onClick={() => handleClick(ROUTES.PROFILE)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors duration-200 ${active
-                          ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                          : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
+                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
+                        : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
                         }`}
                     >
                       <UserIcon className="w-5 h-5" />
@@ -105,8 +105,8 @@ const DropdownMenu: FC<IDropdownMenuProps> = ({ handleClick }) => {
                     <button
                       onClick={() => handleClick(ROUTES.LOGOUT)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors duration-200 ${active
-                          ? 'bg-danger-50 dark:bg-danger-900/20 text-danger-700 dark:text-danger-300'
-                          : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
+                        ? 'bg-danger-50 dark:bg-danger-900/20 text-danger-700 dark:text-danger-300'
+                        : 'text-text dark:text-dark-text hover:bg-neutral-50 dark:hover:bg-dark-background'
                         }`}
                     >
                       <ArrowRightOnRectangleIcon className="w-5 h-5" />

@@ -10,10 +10,10 @@ export const Login: FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit = async (username: string, password: string) => {
+  const handleSubmit = async (email: string, password: string) => {
     setLoading(true);
     const body = {
-      username: username,
+      username: email,
       password: password,
     };
 
@@ -32,8 +32,8 @@ export const Login: FC = () => {
           alert(error.response.data.detail);
         } else if (error.response.data.non_field_errors) {
           alert(`Login error: ${error.response.data.non_field_errors[0]}`);
-        } else if (error.response.data.username) {
-          alert(`Username error: ${error.response.data.username[0]}`);
+        } else if (error.response.data.email) {
+          alert(`Email error: ${error.response.data.email[0]}`);
         } else if (error.response.data.password) {
           alert(`Password error: ${error.response.data.password[0]}`);
         } else {
@@ -67,7 +67,6 @@ export const Login: FC = () => {
         {/* Login Form */}
         <div className="card-elevated">
           <LoginForm
-            title="Sign In"
             buttonText="Sign In"
             onSubmit={handleSubmit}
             loading={loading}

@@ -14,7 +14,7 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class UserProfileView(APIView):
-    permissions_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user

@@ -12,14 +12,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 interface IRegisterFormProps {
-  title: string;
   buttonText: string;
-  onSubmit: (username: string, email: string, password: string) => void;
+  onSubmit: (firstName: string, lastName: string, email: string, password: string) => void;
   loading: boolean;
 }
 
 const RegisterForm: React.FC<IRegisterFormProps> = ({
-  title,
   buttonText,
   onSubmit,
   loading,
@@ -32,7 +30,8 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -46,22 +45,23 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
   const password = watch("password");
 
   const onHandleSubmit = (e: FieldValues) => {
-    const username = e.username;
+    const firstName = e.firstName;
+    const lastName = e.lastName || ""; // Handle empty lastName
     const email = e.email;
     const password = e.password;
-    onSubmit(username, email, password);
+    onSubmit(firstName, lastName, email, password);
   };
 
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit(onHandleSubmit)} className="space-y-6">
-        {/* Username Field */}
+        {/* First Name Field */}
         <div>
           <label
-            htmlFor="username"
+            htmlFor="firstName"
             className="block text-sm font-medium text-text dark:text-dark-text mb-2"
           >
-            Username
+            First Name *
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -69,30 +69,78 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
             </div>
             <input
               type="text"
-              id="username"
-              {...register("username", {
-                required: "Username is required",
+              id="firstName"
+              {...register("firstName", {
+                required: "First name is required",
                 minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
+                  value: 2,
+                  message: "First name must be at least 2 characters",
                 },
                 maxLength: {
-                  value: 30,
-                  message: "Username must be less than 30 characters",
+                  value: 50,
+                  message: "First name must be less than 50 characters",
                 },
                 pattern: {
-                  value: /^[a-zA-Z0-9_]+$/,
-                  message: "Username can only contain letters, numbers, and underscores",
+                  value: /^[a-zA-Z\s'-]+$/,
+                  message: "First name can only contain letters, spaces, hyphens, and apostrophes",
                 },
               })}
-              className={`input-field pl-10 ${errors.username ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
-              placeholder="Choose a unique username"
+              className={`input-field pl-10 ${errors.firstName ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
+              placeholder="Enter your first name"
             />
           </div>
-          {errors.username && (
+          {errors.firstName && (
             <p className="mt-2 text-sm text-danger flex items-center space-x-1">
               <span>⚠</span>
-              <span>{errors.username.message as string}</span>
+              <span>{errors.firstName.message as string}</span>
+            </p>
+          )}
+        </div>
+
+        {/* Last Name Field */}
+        <div>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-text dark:text-dark-text mb-2"
+          >
+            Last Name
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <UserIcon className="h-5 w-5 text-text-muted dark:text-dark-text-muted" />
+            </div>
+            <input
+              type="text"
+              id="lastName"
+              {...register("lastName", {
+                required: false,
+                minLength: {
+                  value: 2,
+                  message: "Last name must be at least 2 characters",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "Last name must be less than 50 characters",
+                },
+                pattern: {
+                  value: /^[a-zA-Z\s'-]*$/,
+                  message: "Last name can only contain letters, spaces, hyphens, and apostrophes",
+                },
+                validate: (value) => {
+                  if (value && value.length > 0 && value.length < 2) {
+                    return "Last name must be at least 2 characters";
+                  }
+                  return true;
+                },
+              })}
+              className={`input-field pl-10 ${errors.lastName ? "border-danger focus:border-danger focus:ring-danger" : ""}`}
+              placeholder="Enter your last name (optional)"
+            />
+          </div>
+          {errors.lastName && (
+            <p className="mt-2 text-sm text-danger flex items-center space-x-1">
+              <span>⚠</span>
+              <span>{errors.lastName.message as string}</span>
             </p>
           )}
         </div>
@@ -250,7 +298,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
         </div>
 
         {/* Terms and Conditions */}
-        <div className="flex items-start space-x-3">
+        {/* <div className="flex items-start space-x-3">
           <input
             type="checkbox"
             id="terms"
@@ -281,7 +329,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({
             <span>⚠</span>
             <span>{errors.terms.message as string}</span>
           </p>
-        )}
+        )} */}
 
         {/* Submit Button */}
         <button

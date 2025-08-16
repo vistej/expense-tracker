@@ -12,7 +12,6 @@ import {
   TrashIcon,
   PencilIcon,
   CheckIcon,
-  XMarkIcon,
   SunIcon,
   MoonIcon,
   EyeIcon,
@@ -34,19 +33,21 @@ export const Profile: FC = () => {
     monthly: true,
   });
 
-  // Mock user data - in real app this would come from API
+  // Use actual user data from context
   const userProfile = {
     ...user,
-    email: "user@example.com",
-    fullName: "John Doe",
-    phone: "+1 (555) 123-4567",
-    joinDate: "2024-01-15",
-    lastLogin: "2024-01-20",
-    totalExpenses: 156,
-    totalAmount: 2847.50,
-    favoriteCategory: "Food & Dining",
-    timezone: "UTC-5",
-    language: "English",
+    // Fallback values if user data is not available
+    first_name: user?.first_name || "User",
+    last_name: user?.last_name || "",
+    email: user?.email || "user@example.com",
+    phone: "+1 (555) 123-4567", // This could be added to user model later
+    joinDate: "2024-01-15", // This could be added to user model later
+    lastLogin: "2024-01-20", // This could be added to user model later
+    totalExpenses: 156, // This could come from API later
+    totalAmount: 2847.50, // This could come from API later
+    favoriteCategory: "Food & Dining", // This could come from API later
+    timezone: "UTC-5", // This could be added to user model later
+    language: "English", // This could be added to user model later
   };
 
   const tabs = [
@@ -77,7 +78,7 @@ export const Profile: FC = () => {
           </div>
           <div className="flex-1">
             <h2 className="text-2xl font-display font-bold text-text dark:text-dark-text mb-2">
-              {userProfile.fullName}
+              {userProfile.first_name} {userProfile.last_name}
             </h2>
             <p className="text-text-muted dark:text-dark-text-muted mb-1">
               @{userProfile.username}
@@ -104,11 +105,22 @@ export const Profile: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-text dark:text-dark-text mb-2">
-              Full Name
+              First Name
             </label>
             <input
               type="text"
-              defaultValue={userProfile.fullName}
+              defaultValue={userProfile.first_name}
+              disabled={!isEditing}
+              className="input-field disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-text dark:text-dark-text mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              defaultValue={userProfile.last_name}
               disabled={!isEditing}
               className="input-field disabled:opacity-50 disabled:cursor-not-allowed"
             />
@@ -135,17 +147,7 @@ export const Profile: FC = () => {
               className="input-field disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-text dark:text-dark-text mb-2">
-              Phone
-            </label>
-            <input
-              type="tel"
-              defaultValue={userProfile.phone}
-              disabled={!isEditing}
-              className="input-field disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
+
         </div>
 
         {isEditing && (
@@ -181,8 +183,8 @@ export const Profile: FC = () => {
               <button
                 onClick={() => handleThemeChange("light")}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-all duration-200 ${theme === "light"
-                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
-                    : "border-border dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-600"
+                  ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
+                  : "border-border dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-600"
                   }`}
               >
                 <SunIcon className="w-5 h-5" />
@@ -192,8 +194,8 @@ export const Profile: FC = () => {
               <button
                 onClick={() => handleThemeChange("dark")}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-all duration-200 ${theme === "dark"
-                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
-                    : "border-border dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-600"
+                  ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
+                  : "border-border dark:border-dark-border hover:border-primary-300 dark:hover:border-primary-600"
                   }`}
               >
                 <MoonIcon className="w-5 h-5" />
@@ -481,8 +483,8 @@ export const Profile: FC = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${activeTab === tab.id
-                      ? "bg-primary-500 text-white shadow-soft"
-                      : "text-text dark:text-dark-text hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+                    ? "bg-primary-500 text-white shadow-soft"
+                    : "text-text dark:text-dark-text hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20"
                     }`}
                 >
                   <Icon className="w-5 h-5" />
