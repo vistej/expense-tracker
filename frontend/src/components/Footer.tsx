@@ -6,16 +6,6 @@ export const Footer: FC = () => {
     <footer className="bg-background-card dark:bg-dark-background-card border-t border-border dark:border-dark-border mt-auto transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
-          {/* Main footer content */}
-          <div className="mb-6">
-            <h3 className="text-lg font-display font-semibold text-text dark:text-dark-text mb-3">
-              ExpenseTracker
-            </h3>
-            <p className="text-text-muted dark:text-dark-text-muted max-w-md mx-auto leading-relaxed">
-              Take control of your finances with our intuitive expense tracking solution.
-            </p>
-          </div>
-
           {/* Tech stack */}
           <div className="mb-6">
             <p className="text-sm text-text-muted dark:text-dark-text-muted mb-3">
