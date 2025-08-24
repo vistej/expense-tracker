@@ -86,7 +86,11 @@ const AddExpenseDialog = ({
   }, [isOpen, expense, reset]);
 
   const addExpense = async (data: ExpenseForm) => {
-    const expenseData = { ...data, date: formatDate(data.date) };
+    const expenseData = {
+      ...data,
+      date: formatDate(data.date),
+      recurrence_period: data.recurrence_period || null
+    };
     try {
       const res = await api.post(ENDPOINTS.CREATE_EXPENSE, expenseData);
       reset({});
@@ -99,7 +103,11 @@ const AddExpenseDialog = ({
   };
 
   const updateExpense = async (data: ExpenseForm) => {
-    const expenseData = { ...data, date: formatDate(data.date) };
+    const expenseData = {
+      ...data,
+      date: formatDate(data.date),
+      recurrence_period: data.recurrence_period || null
+    };
     try {
       const res = await api.patch(
         ENDPOINTS.UPDATE_EXPENSE + expenseData.id + "/",
