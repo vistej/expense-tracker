@@ -84,7 +84,7 @@ export const getChartOptions = (
         titleFont: {
           family: 'Poppins, system-ui, sans-serif',
           size: 14,
-          weight: '600',
+          weight: 600,
         },
         bodyFont: {
           family: 'Inter, system-ui, sans-serif',

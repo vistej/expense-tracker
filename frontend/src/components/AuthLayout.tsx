@@ -1,5 +1,5 @@
 import React from "react";
-import { ChartBarIcon, ShieldCheckIcon, BellIcon, UserPlusIcon } from "@heroicons/react/24/outline";
+import { ChartBarIcon, ShieldCheckIcon, BellIcon } from "@heroicons/react/24/outline";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
